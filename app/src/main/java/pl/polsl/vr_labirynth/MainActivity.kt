@@ -1,6 +1,7 @@
 package pl.polsl.vr_labirynth
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.view.MotionEvent
@@ -15,12 +16,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private val exitButtonClickListener =  View.OnClickListener{ exitButtonClicked() }
+    private val newGameButtonClickListener = View.OnClickListener { newGameButtonClicked() }
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
         val animation: AnimationDrawable = binding.mainMenuLayout.background as AnimationDrawable
         animation.setEnterFadeDuration(2000)
         animation.setExitFadeDuration(4000)
@@ -43,6 +46,7 @@ class MainActivity : AppCompatActivity() {
             v?.onTouchEvent(event) ?: true
         }
         binding.exitButton.setOnClickListener(exitButtonClickListener)
+        binding.newGameButton.setOnClickListener(newGameButtonClickListener)
     }
 
     /**
@@ -67,6 +71,14 @@ class MainActivity : AppCompatActivity() {
     private fun exitButtonClicked(){
         finish()
         exitProcess(0);
+    }
+
+    /**
+     * Method starts new game
+     */
+    private fun newGameButtonClicked(){
+        val newGameIntent: Intent = Intent(this, GameActivity::class.java)
+        startActivity(newGameIntent)
     }
 }
 
