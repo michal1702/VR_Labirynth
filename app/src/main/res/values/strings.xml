@@ -3,5 +3,8 @@
     <string name="score">Score</string>
     <string name="player_name">Player Name</string>
     <string name="no">No.</string>
-    <string name="high_scores">High Scores</string>
+    <string name="high_scores">HIGH SCORES</string>
+    <string name="new_game">NEW GAME</string>
+    <string name="load">LOAD</string>
+    <string name="exit">EXIT</string>
 </resources>

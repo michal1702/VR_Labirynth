@@ -34,21 +34,39 @@
                     android:layout_width="50dp"
                     android:gravity="center"
                     android:text="@string/no"
-                    android:textSize="20sp" />
+                    android:fontFamily="@font/itim_regular"
+                    android:textColor="@color/text_white"
+                    android:shadowColor="@color/black"
+                    android:shadowRadius="10"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:textSize="23sp" />
 
                 <TextView
                     android:id="@+id/playerName"
                     android:layout_width="170dp"
                     android:gravity="center"
                     android:text="@string/player_name"
-                    android:textSize="20sp" />
+                    android:fontFamily="@font/itim_regular"
+                    android:textColor="@color/text_white"
+                    android:shadowColor="@color/black"
+                    android:shadowRadius="10"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:textSize="23sp" />
 
                 <TextView
                     android:id="@+id/playerScore"
                     android:layout_width="80dp"
                     android:gravity="center"
                     android:text="@string/score"
-                    android:textSize="20sp" />
+                    android:fontFamily="@font/itim_regular"
+                    android:textColor="@color/text_white"
+                    android:shadowColor="@color/black"
+                    android:shadowRadius="10"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:textSize="23sp" />
             </TableRow>
         </TableLayout>
     </ScrollView>
@@ -71,8 +89,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="48dp"
-        android:textSize="22sp"
+        android:textSize="25sp"
         android:text="@string/high_scores"
+        android:textStyle="bold"
+        android:fontFamily="@font/itim_regular"
+        android:textColor="@color/text_white"
+        android:shadowColor="@color/black"
+        android:shadowRadius="10"
+        android:shadowDx="1"
+        android:shadowDy="1"
         app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="@+id/scrollView2"
         app:layout_constraintHorizontal_bias="0.495"
