@@ -2,21 +2,25 @@ package pl.polsl.vr_labirynth
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.drawable.AnimationDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import pl.polsl.vr_labirynth.databinding.ActivityMainBinding
+import pl.polsl.vr_labirynth.interfaces.IBackgroundAnimation
+import pl.polsl.vr_labirynth.interfaces.ITouchAnimation
 import kotlin.system.exitProcess
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), IBackgroundAnimation, ITouchAnimation {
 
+    override val animationBackground: Drawable by lazy { binding.mainMenuLayout.background }
     private lateinit var binding: ActivityMainBinding
 
     private val exitButtonClickListener =  View.OnClickListener{ exitButtonClicked() }
     private val newGameButtonClickListener = View.OnClickListener { newGameButtonClicked() }
+    private val highScoresButtonClickListener = View.OnClickListener { highScoresButtonClicked() }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,45 +28,16 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
-        val animation: AnimationDrawable = binding.mainMenuLayout.background as AnimationDrawable
-        animation.setEnterFadeDuration(2000)
-        animation.setExitFadeDuration(4000)
-        animation.start()
+        animateBackground()
 
-        binding.newGameButton.setOnTouchListener { v, event ->
-            touched(v, event)
-            v?.onTouchEvent(event) ?: true
-        }
-        binding.loadButton.setOnTouchListener { v, event ->
-            touched(v, event)
-            v?.onTouchEvent(event) ?: true
-        }
-        binding.highScoresButton.setOnTouchListener { v, event ->
-            touched(v, event)
-            v?.onTouchEvent(event) ?: true
-        }
-        binding.exitButton.setOnTouchListener { v, event ->
-            touched(v, event)
-            v?.onTouchEvent(event) ?: true
-        }
+        buttonTouched(binding.newGameButton)
+        buttonTouched(binding.loadButton)
+        buttonTouched(binding.highScoresButton)
+        buttonTouched(binding.exitButton)
+
         binding.exitButton.setOnClickListener(exitButtonClickListener)
         binding.newGameButton.setOnClickListener(newGameButtonClickListener)
-    }
-
-    /**
-     * Method changes background color after a touch
-     * @param view current view
-     * @param event action performed on a button
-     */
-    private fun touched(view: View, event: MotionEvent?){
-        when (event?.action) {
-            MotionEvent.ACTION_DOWN -> {
-                view.setBackgroundResource(R.drawable.button_touched_background)
-            }
-            MotionEvent.ACTION_UP -> {
-                view.setBackgroundResource(R.drawable.buttons_background)
-            }
-        }
+        binding.highScoresButton.setOnClickListener(highScoresButtonClickListener)
     }
 
     /**
@@ -77,8 +52,16 @@ class MainActivity : AppCompatActivity() {
      * Method starts new game
      */
     private fun newGameButtonClicked(){
-        val newGameIntent: Intent = Intent(this, GameActivity::class.java)
+        val newGameIntent = Intent(this, GameActivity::class.java)
         startActivity(newGameIntent)
+    }
+
+    /**
+     * Method opens high scores activity
+     */
+    private fun highScoresButtonClicked(){
+        val highScoresIntent = Intent(this, HighScoresActivity::class.java)
+        startActivity(highScoresIntent)
     }
 }
 

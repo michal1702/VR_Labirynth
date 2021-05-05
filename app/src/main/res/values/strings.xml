@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">VR_Labirynth</string>
+    <string name="score">Score</string>
+    <string name="player_name">Player Name</string>
+    <string name="no">No.</string>
+    <string name="high_scores">High Scores</string>
 </resources>
