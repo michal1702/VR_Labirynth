@@ -1,10 +1,9 @@
-package pl.polsl.vr_labirynth
+package pl.polsl.vr_labirynth.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import pl.polsl.vr_labirynth.databinding.ActivityMainBinding

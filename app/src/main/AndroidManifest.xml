@@ -11,15 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.VR_Labirynth">
-        <activity android:name=".HighScoresActivity"
-            android:parentActivityName=".MainActivity"
+        <activity android:name=".activities.HighScoresActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".GameActivity"
-            android:parentActivityName=".MainActivity"
+            android:name=".activities.GameActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package pl.polsl.vr_labirynth
+package pl.polsl.vr_labirynth.activities
 
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity

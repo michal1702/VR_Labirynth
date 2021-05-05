@@ -1,4 +1,4 @@
-package pl.polsl.vr_labirynth
+package pl.polsl.vr_labirynth.activities
 
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
