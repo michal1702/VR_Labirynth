@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "308418177006",
+    "firebase_url": "https://vrlabirynth-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "vrlabirynth",
+    "storage_bucket": "vrlabirynth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308418177006:android:61bdc4bc0d6edc31ad10ff",
+        "android_client_info": {
+          "package_name": "pl.polsl.vr_labirynth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "308418177006-p41h3dqif81pfmhv8tcvjfof541t6tsf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-HrswzC0XiKHxDYnYhKs71hVLxGLqKsU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "308418177006-p41h3dqif81pfmhv8tcvjfof541t6tsf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -21,6 +21,7 @@
         app:layout_constraintVertical_bias="0.605">
 
         <TableLayout
+            android:id="@+id/scoreboardTableLayout"
             android:layout_width="300dp"
             android:layout_height="wrap_content">
 
@@ -32,40 +33,40 @@
                 <TextView
                     android:id="@+id/playerPlace"
                     android:layout_width="50dp"
-                    android:gravity="center"
-                    android:text="@string/no"
                     android:fontFamily="@font/itim_regular"
-                    android:textColor="@color/text_white"
+                    android:gravity="center"
                     android:shadowColor="@color/black"
-                    android:shadowRadius="10"
                     android:shadowDx="1"
                     android:shadowDy="1"
+                    android:shadowRadius="10"
+                    android:text="@string/no"
+                    android:textColor="@color/text_white"
                     android:textSize="23sp" />
 
                 <TextView
                     android:id="@+id/playerName"
                     android:layout_width="170dp"
-                    android:gravity="center"
-                    android:text="@string/player_name"
                     android:fontFamily="@font/itim_regular"
-                    android:textColor="@color/text_white"
+                    android:gravity="center"
                     android:shadowColor="@color/black"
-                    android:shadowRadius="10"
                     android:shadowDx="1"
                     android:shadowDy="1"
+                    android:shadowRadius="10"
+                    android:text="@string/player_name"
+                    android:textColor="@color/text_white"
                     android:textSize="23sp" />
 
                 <TextView
                     android:id="@+id/playerScore"
                     android:layout_width="80dp"
-                    android:gravity="center"
-                    android:text="@string/score"
                     android:fontFamily="@font/itim_regular"
-                    android:textColor="@color/text_white"
+                    android:gravity="center"
                     android:shadowColor="@color/black"
-                    android:shadowRadius="10"
                     android:shadowDx="1"
                     android:shadowDy="1"
+                    android:shadowRadius="10"
+                    android:text="@string/score"
+                    android:textColor="@color/text_white"
                     android:textSize="23sp" />
             </TableRow>
         </TableLayout>
@@ -73,10 +74,10 @@
 
     <ImageButton
         android:id="@+id/backButton"
-        android:layout_width="51dp"
-        android:layout_height="38dp"
-        android:paddingHorizontal="0dp"
-        android:paddingVertical="0dp"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+
+        android:scaleType="fitCenter"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/buttons_background"

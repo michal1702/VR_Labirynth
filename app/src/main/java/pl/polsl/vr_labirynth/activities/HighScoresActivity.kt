@@ -1,13 +1,13 @@
 package pl.polsl.vr_labirynth.activities
 
 import android.graphics.drawable.Drawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import pl.polsl.vr_labirynth.databinding.ActivityHighScoresBinding
 import pl.polsl.vr_labirynth.interfaces.IBackgroundAnimation
 import pl.polsl.vr_labirynth.interfaces.ITouchAnimation
+import pl.polsl.vr_labirynth.model.DatabaseManager
 
 class HighScoresActivity() : AppCompatActivity(), IBackgroundAnimation, ITouchAnimation {
 
@@ -25,9 +25,22 @@ class HighScoresActivity() : AppCompatActivity(), IBackgroundAnimation, ITouchAn
 
         binding.backButton.setOnClickListener(backButtonOnClickListener)
         imageButtonTouched(binding.backButton)
+
+        fillTableView()
     }
 
+    /**
+     * Back button clicked action. Closes an activity.
+     */
     private fun backButtonClicked(){
         this.finish()
+    }
+
+    /**
+     * Method starts process of filling a table view.
+     */
+    private fun fillTableView(){
+        val db = DatabaseManager()
+        db.getScoreBoardData("Users", this, applicationContext)
     }
 }
