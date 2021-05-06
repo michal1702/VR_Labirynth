@@ -16,7 +16,12 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+          
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+            window.setDecorFitsSystemWindows(false)
+        else 
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+ 
         val webSettings = binding.gameWebView.settings
         webSettings.javaScriptEnabled = true
         binding.gameWebView.webChromeClient = WebChromeClient()
