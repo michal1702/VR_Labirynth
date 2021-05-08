@@ -15,6 +15,9 @@ class LoadGameActivity() : AppCompatActivity(), IBackgroundAnimation, ITouchAnim
     private lateinit var binding:ActivityLoadGameBinding
 
     private val backButtonOnClickListener = View.OnClickListener { backButtonClicked() }
+    private val loadButton1ClickListener = View.OnClickListener { loadButton1Clicker() }
+    private val loadButton2ClickListener = View.OnClickListener { loadButton2Clicker() }
+    private val loadButton3ClickListener = View.OnClickListener { loadButton3Clicker() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +31,13 @@ class LoadGameActivity() : AppCompatActivity(), IBackgroundAnimation, ITouchAnim
         setContentView(binding.root)
 
         imageButtonTouched(binding.backButton)
+        buttonTouched(binding.loadButton1)
+        buttonTouched(binding.loadButton2)
+        buttonTouched(binding.loadButton3)
         binding.backButton.setOnClickListener(backButtonOnClickListener)
+        binding.loadButton1.setOnClickListener(loadButton1ClickListener)
+        binding.loadButton2.setOnClickListener(loadButton2ClickListener)
+        binding.loadButton3.setOnClickListener(loadButton3ClickListener)
     }
 
     /**
@@ -36,5 +45,17 @@ class LoadGameActivity() : AppCompatActivity(), IBackgroundAnimation, ITouchAnim
      */
     private fun backButtonClicked(){
         this.finish()
+    }
+
+    private fun loadButton1Clicker(){
+
+    }
+
+    private fun loadButton2Clicker(){
+
+    }
+
+    private fun loadButton3Clicker(){
+
     }
 }

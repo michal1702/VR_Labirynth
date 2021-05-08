@@ -12,13 +12,57 @@
         android:id="@+id/backButton"
         android:layout_width="60dp"
         android:layout_height="50dp"
-
-        android:scaleType="fitCenter"
+        style="@style/backButtonStyle"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/buttons_background"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/abc_vector_test" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/loadButton1"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        style="@style/loadButtonStyle"
+        android:text="@string/empty_slot"
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <Button
+        android:id="@+id/loadButton2"
+        style="@style/loadButtonStyle"
+        android:layout_width="250dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/empty_slot"
+        app:layout_constraintEnd_toEndOf="@+id/loadButton1"
+        app:layout_constraintHorizontal_bias="0.542"
+        app:layout_constraintStart_toStartOf="@+id/loadButton1"
+        app:layout_constraintTop_toBottomOf="@+id/loadButton1" />
+
+    <Button
+        android:id="@+id/loadButton3"
+        style="@style/loadButtonStyle"
+        android:layout_width="250dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/empty_slot"
+        app:layout_constraintEnd_toEndOf="@+id/loadButton2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/loadButton2"
+        app:layout_constraintTop_toBottomOf="@+id/loadButton2" />
+
+    <TextView
+        android:id="@+id/textView2"
+        style="@style/textViewOnBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="136dp"
+        android:text="@string/load_game"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
