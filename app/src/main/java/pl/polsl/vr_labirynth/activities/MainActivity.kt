@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity(), IBackgroundAnimation, ITouchAnimation 
     private val exitButtonClickListener =  View.OnClickListener{ exitButtonClicked() }
     private val newGameButtonClickListener = View.OnClickListener { newGameButtonClicked() }
     private val highScoresButtonClickListener = View.OnClickListener { highScoresButtonClicked() }
+    private val loadGameButtonClickListener = View.OnClickListener { loadGameButtonClicked() }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity(), IBackgroundAnimation, ITouchAnimation 
         binding.exitButton.setOnClickListener(exitButtonClickListener)
         binding.newGameButton.setOnClickListener(newGameButtonClickListener)
         binding.highScoresButton.setOnClickListener(highScoresButtonClickListener)
+        binding.loadButton.setOnClickListener(loadGameButtonClickListener)
     }
 
     /**
@@ -61,6 +63,14 @@ class MainActivity : AppCompatActivity(), IBackgroundAnimation, ITouchAnimation 
     private fun highScoresButtonClicked(){
         val highScoresIntent = Intent(this, HighScoresActivity::class.java)
         startActivity(highScoresIntent)
+    }
+
+    /**
+     * Method opens load game activity
+     */
+    private fun loadGameButtonClicked(){
+        val loadGameIntent = Intent(this, LoadGameActivity::class.java)
+        startActivity(loadGameIntent)
     }
 }
 
