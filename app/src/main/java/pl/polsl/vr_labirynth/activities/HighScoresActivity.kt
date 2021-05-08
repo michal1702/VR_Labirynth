@@ -1,6 +1,7 @@
 package pl.polsl.vr_labirynth.activities
 
 import android.graphics.drawable.Drawable
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -25,7 +26,7 @@ class HighScoresActivity() : AppCompatActivity(), IBackgroundAnimation, ITouchAn
 
         binding.backButton.setOnClickListener(backButtonOnClickListener)
         imageButtonTouched(binding.backButton)
-
+        this.getSystemService(CONNECTIVITY_SERVICE)
         fillTableView()
     }
 
@@ -41,6 +42,7 @@ class HighScoresActivity() : AppCompatActivity(), IBackgroundAnimation, ITouchAn
      */
     private fun fillTableView(){
         val db = DatabaseManager()
+        db.checkInternetConnection(this.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager)
         db.getScoreBoardData("Users", this, applicationContext)
     }
 }

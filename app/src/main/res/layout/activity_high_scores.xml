@@ -8,75 +8,102 @@
     android:background="@drawable/gradient_list"
     tools:context=".activities.HighScoresActivity">
 
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="320dp"
-        android:layout_height="396dp"
-        android:background="@drawable/buttons_background"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="350dp"
+        android:layout_height="400dp"
+        android:layout_marginTop="200dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.605">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TableLayout
-            android:id="@+id/scoreboardTableLayout"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content">
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="320dp"
+            android:layout_height="396dp"
+            android:background="@drawable/buttons_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
 
-            <TableRow
-                android:id="@+id/header"
+            <TableLayout
+                android:id="@+id/scoreboardTableLayout"
                 android:layout_width="300dp"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/playerPlace"
-                    android:layout_width="50dp"
-                    android:fontFamily="@font/itim_regular"
-                    android:gravity="center"
-                    android:shadowColor="@color/black"
-                    android:shadowDx="1"
-                    android:shadowDy="1"
-                    android:shadowRadius="10"
-                    android:text="@string/no"
-                    android:textColor="@color/text_white"
-                    android:textSize="23sp" />
+                <TableRow
+                    android:id="@+id/header"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/playerName"
-                    android:layout_width="170dp"
-                    android:fontFamily="@font/itim_regular"
-                    android:gravity="center"
-                    android:shadowColor="@color/black"
-                    android:shadowDx="1"
-                    android:shadowDy="1"
-                    android:shadowRadius="10"
-                    android:text="@string/player_name"
-                    android:textColor="@color/text_white"
-                    android:textSize="23sp" />
+                    <TextView
+                        android:id="@+id/playerPlace"
+                        android:layout_width="50dp"
+                        android:fontFamily="@font/itim_regular"
+                        android:gravity="center"
+                        android:shadowColor="@color/black"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:shadowRadius="10"
+                        android:text="@string/no"
+                        android:textColor="@color/text_white"
+                        android:textSize="23sp" />
 
-                <TextView
-                    android:id="@+id/playerScore"
-                    android:layout_width="80dp"
-                    android:fontFamily="@font/itim_regular"
-                    android:gravity="center"
-                    android:shadowColor="@color/black"
-                    android:shadowDx="1"
-                    android:shadowDy="1"
-                    android:shadowRadius="10"
-                    android:text="@string/score"
-                    android:textColor="@color/text_white"
-                    android:textSize="23sp" />
-            </TableRow>
-        </TableLayout>
-    </ScrollView>
+                    <TextView
+                        android:id="@+id/playerName"
+                        android:layout_width="170dp"
+                        android:fontFamily="@font/itim_regular"
+                        android:gravity="center"
+                        android:shadowColor="@color/black"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:shadowRadius="10"
+                        android:text="@string/player_name"
+                        android:textColor="@color/text_white"
+                        android:textSize="23sp" />
+
+                    <TextView
+                        android:id="@+id/playerScore"
+                        android:layout_width="80dp"
+                        android:fontFamily="@font/itim_regular"
+                        android:gravity="center"
+                        android:shadowColor="@color/black"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:shadowRadius="10"
+                        android:text="@string/score"
+                        android:textColor="@color/text_white"
+                        android:textSize="23sp" />
+                </TableRow>
+            </TableLayout>
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/internetProblemTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="170dp"
+            android:text=""
+            android:textColor="@color/text_white"
+            android:textSize="25sp"
+            android:fontFamily="@font/itim_regular"
+            android:gravity="center"
+            android:shadowColor="@color/black"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="10"
+            app:layout_constraintEnd_toEndOf="@+id/scrollView"
+            app:layout_constraintStart_toStartOf="@+id/scrollView"
+            app:layout_constraintTop_toTopOf="@+id/scrollView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageButton
         android:id="@+id/backButton"
         android:layout_width="60dp"
         android:layout_height="50dp"
-
         android:scaleType="fitCenter"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
@@ -89,19 +116,18 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
-        android:textSize="25sp"
-        android:text="@string/high_scores"
-        android:textStyle="bold"
+        android:layout_marginBottom="52dp"
         android:fontFamily="@font/itim_regular"
-        android:textColor="@color/text_white"
         android:shadowColor="@color/black"
-        android:shadowRadius="10"
         android:shadowDx="1"
         android:shadowDy="1"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
-        app:layout_constraintEnd_toEndOf="@+id/scrollView2"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="@+id/scrollView2" />
+        android:shadowRadius="10"
+        android:text="@string/high_scores"
+        android:textColor="@color/text_white"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
