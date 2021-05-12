@@ -7,4 +7,6 @@
     <string name="new_game">NEW GAME</string>
     <string name="load">LOAD</string>
     <string name="exit">EXIT</string>
+    <string name="empty_slot">Empty Slot\nStart new game</string>
+    <string name="load_game">Load Game</string>
 </resources>
