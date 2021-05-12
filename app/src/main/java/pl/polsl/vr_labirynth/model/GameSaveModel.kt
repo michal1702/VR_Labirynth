@@ -1,9 +1,10 @@
 package pl.polsl.vr_labirynth.model
 
 import android.content.Context
-import android.widget.Toast
-import java.io.File
-import java.io.FileOutputStream
+import org.json.JSONObject
+import pl.polsl.vr_labirynth.entities.SaveEntity
+import pl.polsl.vr_labirynth.utils.IOUtil
+import java.io.IOException
 
 class GameSaveModel(context: Context, slotName: SaveSlots) {
 
@@ -19,16 +20,39 @@ class GameSaveModel(context: Context, slotName: SaveSlots) {
         fileLocation = context.cacheDir.absolutePath + "/" + slotName.value + ".txt"
     }
 
-    fun load(){
-        TODO("Load game")
+    /**
+     * Loads game data from JSON format
+     * @return JSON object or null in case of error
+     */
+    fun load(): JSONObject?{
+        return try {
+            JSONObject(IOUtil.readJsonFromFile(this.fileLocation))
+        }catch (e: IOException){
+            null
+        }
     }
 
-    fun save(){
-        TODO("Save game")
+    /**
+     * Saves game data in JSON format
+     * @param saveEntity
+     */
+    fun save(saveEntity: SaveEntity){
+        val jObject = JSONObject()
+        jObject.put("positionX", saveEntity.positionX)
+        jObject.put("positionY", saveEntity.positionY)
+        jObject.put("positionZ", saveEntity.positionZ)
+        jObject.put("score", saveEntity.score)
+        jObject.put("seed", saveEntity.seed)
+
+        val jString = jObject.toString()
+        IOUtil.writeJsonToFile(this.fileLocation, jString)
     }
 
+    /**
+     * Checks if file exists
+     * @return true if file exists else false
+     */
     fun ifFileExists(): Boolean{
-        val file = File(fileLocation)
-        return file.exists()
+        return IOUtil.ifExists(this.fileLocation)
     }
 }
