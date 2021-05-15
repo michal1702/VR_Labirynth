@@ -23,7 +23,7 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
-        style="@style/loadButtonStyle"
+        style="@style/buttonStyle"
         android:text="@string/empty_slot"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
         app:layout_constraintStart_toStartOf="@+id/textView2"
@@ -31,7 +31,7 @@
 
     <Button
         android:id="@+id/loadButton2"
-        style="@style/loadButtonStyle"
+        style="@style/buttonStyle"
         android:layout_width="250dp"
         android:layout_height="80dp"
         android:layout_marginTop="32dp"
@@ -43,7 +43,7 @@
 
     <Button
         android:id="@+id/loadButton3"
-        style="@style/loadButtonStyle"
+        style="@style/buttonStyle"
         android:layout_width="250dp"
         android:layout_height="80dp"
         android:layout_marginTop="32dp"

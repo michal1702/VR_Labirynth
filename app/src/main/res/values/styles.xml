@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="loadButtonStyle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="buttonStyle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:background">@drawable/buttons_background</item>
         <item name="backgroundTint">@null</item>
         <item name="android:textStyle">bold</item>
@@ -20,9 +20,29 @@
     </style>
 
     <style name="textViewOnBackground" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:gravity">center</item>
         <item name="android:textSize">28sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/itim_regular</item>
+        <item name="android:textColor">@color/text_white</item>
+        <item name="android:shadowColor">@color/black</item>
+        <item name="android:shadowRadius">10</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+    </style>
+    
+    <style name="popupStyle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">false</item>
+    </style>
+
+    <style name="editTextStyle">
+        <item name="backgroundTint">@color/black</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/itim_regular</item>
+        <item name="android:textColorHint">@color/text_white</item>
         <item name="android:textColor">@color/text_white</item>
         <item name="android:shadowColor">@color/black</item>
         <item name="android:shadowRadius">10</item>

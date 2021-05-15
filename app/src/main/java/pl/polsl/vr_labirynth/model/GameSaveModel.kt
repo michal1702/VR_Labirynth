@@ -26,7 +26,7 @@ class GameSaveModel(context: Context, slotName: SaveSlots) {
      */
     fun load(): JSONObject?{
         return try {
-            JSONObject(IOUtil.readJsonFromFile(this.fileLocation))
+            JSONObject(IOUtil.readJsonFromFile(fileLocation))
         }catch (e: IOException){
             null
         }
@@ -45,7 +45,7 @@ class GameSaveModel(context: Context, slotName: SaveSlots) {
         jObject.put("seed", saveEntity.seed)
 
         val jString = jObject.toString()
-        IOUtil.writeJsonToFile(this.fileLocation, jString)
+        IOUtil.writeJsonToFile(fileLocation, jString)
     }
 
     /**
@@ -53,6 +53,15 @@ class GameSaveModel(context: Context, slotName: SaveSlots) {
      * @return true if file exists else false
      */
     fun ifFileExists(): Boolean{
-        return IOUtil.ifExists(this.fileLocation)
+        return IOUtil.ifExists(fileLocation)
+    }
+
+    /**
+     * Removes game save
+     */
+    fun removeSave(){
+        if(IOUtil.ifExists(fileLocation)){
+            IOUtil.removeFile(fileLocation)
+        }
     }
 }
