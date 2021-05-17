@@ -9,4 +9,7 @@
     <string name="exit">EXIT</string>
     <string name="empty_slot">Empty Slot\nStart new game</string>
     <string name="load_game">Load Game</string>
+    <string name="empty_save">Empty save</string>
+    <string name="game_saved">Game Saved</string>
+    <string name="hold_to_delete_saved_game">Hold to delete saved game.</string>
 </resources>
