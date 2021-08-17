@@ -1,12 +1,13 @@
 package pl.polsl.vr_labirynth.model
 
 import android.content.Context
+import android.util.Log
 import org.json.JSONObject
 import pl.polsl.vr_labirynth.entities.SaveEntity
 import pl.polsl.vr_labirynth.utils.IOUtil
 import java.io.IOException
 
-class GameSaveModel(context: Context, slotName: SaveSlots) {
+class GameSaveModel(context: Context, slotName: SaveSlots? = null) {
 
     private var fileLocation: String = ""
 
@@ -17,7 +18,9 @@ class GameSaveModel(context: Context, slotName: SaveSlots) {
     }
 
     init {
-        fileLocation = context.cacheDir.absolutePath + "/" + slotName.value + ".txt"
+        fileLocation = if(slotName != null)
+            context.cacheDir.absolutePath + "/" + slotName.value + ".txt"
+        else context.cacheDir.absolutePath + "/"
     }
 
     /**
@@ -26,8 +29,9 @@ class GameSaveModel(context: Context, slotName: SaveSlots) {
      */
     fun load(): JSONObject?{
         return try {
-            JSONObject(IOUtil.readJsonFromFile(this.fileLocation))
+            JSONObject(IOUtil.readJsonFromFile(fileLocation))
         }catch (e: IOException){
+            Log.e("Load error", "Cannot read JSON object")
             null
         }
     }
@@ -45,7 +49,7 @@ class GameSaveModel(context: Context, slotName: SaveSlots) {
         jObject.put("seed", saveEntity.seed)
 
         val jString = jObject.toString()
-        IOUtil.writeJsonToFile(this.fileLocation, jString)
+        IOUtil.writeJsonToFile(fileLocation, jString)
     }
 
     /**
@@ -53,6 +57,24 @@ class GameSaveModel(context: Context, slotName: SaveSlots) {
      * @return true if file exists else false
      */
     fun ifFileExists(): Boolean{
-        return IOUtil.ifExists(this.fileLocation)
+        return IOUtil.ifExists(fileLocation)
+    }
+
+    /**
+     * Checks if file exists
+     * @param slotName
+     * @return true if file exists else false
+     */
+    fun ifFileExists(slotName: SaveSlots):Boolean{
+        return IOUtil.ifExists(fileLocation + slotName.value + ".txt")
+    }
+
+    /**
+     * Removes game save
+     */
+    fun removeSave(){
+        if(IOUtil.ifExists(fileLocation)){
+            IOUtil.removeFile(fileLocation)
+        }
     }
 }

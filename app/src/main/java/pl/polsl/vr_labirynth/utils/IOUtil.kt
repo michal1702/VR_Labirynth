@@ -34,5 +34,14 @@ class IOUtil {
             val file = File(fileLocation)
             return file.exists()
         }
+
+        /**
+         * Removes file
+         * @param fileLocation
+         */
+        fun removeFile(fileLocation: String){
+            val file = File(fileLocation)
+            file.delete()
+        }
     }
 }
