@@ -1,4 +1,14 @@
 let tmp;
+let coinDensity = 0.5;
+let axeDensity = 0.09;
+let spikeDensity = 0.01;
+let trapDensity = axeDensity + spikeDensity;
+const specials = {
+    NONE: 0,
+    COIN: 1,
+    AXES: 2,
+    SPIKES: 3
+};
 class Maze {
 	constructor(size, nrows, ncols) {
 		this.size = size;
@@ -91,6 +101,9 @@ class Maze {
 				if (grid[r][c].walls.lWall === true) {
 					val += 8;
 				}
+				if (grid[r][c].special === 1) val += 16;
+				if (grid[r][c].special === 2) val += 32;
+				if (grid[r][c].special === 3) val += 64;
 				mapRow.push(val);
 			}
 			map.push(mapRow);
@@ -110,6 +123,21 @@ class Cell {
 			rWall: true,
 			bWall: true,
 			lWall: true,
+		}
+		let rand = Math.random();
+		if(rand > trapDensity){
+		    if(rand < trapDensity + coinDensity){
+		        this.special = specials.COIN;
+		    }
+		    else {
+		        this.special = specials.NONE;
+		    }
+		} else {
+		    if(rand < axeDensity){
+		        this.special = specials.AXES;
+		    } else {
+		        this.special = specials.SPIKES;
+		    }
 		}
 		// TODO: add trap + coins flags, set them randomly with a given probability
 	}
@@ -169,6 +197,7 @@ AFRAME.registerComponent("mymaze", {
     // TODO: rewrite static element generation using three.js
     // TODO: add textures
 	init: function() {
+	var scene = this.el.sceneEl.object3D;
 		for (let r = 0; r < newMaze.nrows; r++) {
 			for (let c = 0; c < newMaze.ncols; c++) {
 				let tmpVal = map[r][c];
@@ -184,6 +213,67 @@ AFRAME.registerComponent("mymaze", {
 					z: 0 + r * 4
 				});
 				this.el.appendChild(box);
+				if (tmpVal >= 64) {
+				    tmpVal -= 64;
+					for (var row = 0; row <= 9; row += 1) {
+						for (var col = 0; col <= 9; col += 1) {
+							var stake = document.createElement("a-cone");
+							stake.setAttribute("geometry", "radiusBottom: 0.125");
+							stake.setAttribute("height", "2");
+							stake.setAttribute("width", "1");
+							stake.setAttribute("animation", "property: object3D.position.y; to: -0.4; dur: 2000; easing: linear; loop: true; dir: alternate");
+							stake.setAttribute("position", {
+								x: 1.8 + c * 4 - col * 0.4,
+								y: 0,
+								z: 1.8 + r * 4 - row * 0.4
+							});
+							this.el.appendChild(stake);
+						}
+					}
+
+				}
+				if (tmpVal >= 32) {
+				    tmpVal -= 32;
+					var cylinderLeft = document.createElement("a-cylinder");
+					cylinderLeft.setAttribute("height", "4");
+					cylinderLeft.setAttribute("radius", "0.3");
+					cylinderLeft.setAttribute("color", "#FFC65D");
+					cylinderLeft.setAttribute("rotation", "0 0 0");
+					cylinderLeft.setAttribute("animation", "property: rotation; to: 0 360 0 dur: 2000; easing: linear; loop: true;");
+					cylinderLeft.setAttribute("position", {
+						x: 0 + c * 4,
+						y: 2,
+						z: 0 + r * 4
+					});
+					for(var i = 0; i < 4; i++){
+						var branch = document.createElement("a-cylinder");
+						branch.setAttribute("height", "3.8");
+						branch.setAttribute("radius", "0.1");
+						branch.setAttribute("color", "#FFC65D");
+						branch.setAttribute("rotation", "90 0 0");
+						branch.setAttribute("position", {
+							x: 0,
+							y: -1.75 + i,
+							z: 0
+						});
+						cylinderLeft.appendChild(branch);
+					}
+					this.el.appendChild(cylinderLeft);
+
+
+				}
+				if (tmpVal >= 16) {
+				    tmpVal -= 16;
+				    const geometry = new THREE.CylinderGeometry(0.5, 0.5, 0.1, 16);
+				    const material = new THREE.MeshBasicMaterial( {color: 0xffff00});
+				    const coin = new THREE.Mesh(geometry, material);
+				    coin.position.x = 0 + c * 4;
+				    coin.position.y = 2;
+				    coin.position.z = 0 + r * 4;
+					coin.rotation.x = Math.PI / 2;
+					coin.rotation.z = Math.PI / 4;
+				    scene.add(coin);
+				}
 				if (tmpVal >= 8) {
 					tmpVal -= 8;
 					var lWall = document.createElement("a-box");

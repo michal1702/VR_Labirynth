@@ -4,45 +4,10 @@
 	<meta charset="UTF-8" />
 	<script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
 	<script src="generator3d.js"></script>
-	<script>
-			AFRAME.registerComponent("stakes", {
-				init: function() {
-					for (var row = 0; row <= 9; row += 1) {
-						for (var col = 0; col <= 9; col += 1) {
-							var stake = document.createElement("a-cone");
-							stake.setAttribute("geometry", "radiusBottom: 0.125");
-							stake.setAttribute("height", "2");
-							stake.setAttribute("width", "1");
-							stake.setAttribute("animation", "property: object3D.position.y; to: -0.4; dur: 2000; easing: linear; loop: true; dir: alternate");
-							stake.setAttribute("position", {
-								x: 1.8 - col * 0.4,
-								y: 0,
-								z: 1.8 - row * 0.4
-							});
-							this.el.appendChild(stake);
-						}
-					}
-				}
-			});
-		</script>
 </head>
 <body>
-<a-scene stakes mymaze inspector stats>
+<a-scene mymaze inspector stats>
 	<a-sky color="#ececec"></a-sky>
-	<a-cylinder position="1.588 5.35208 1.70875" radius="0.5" height="1.5" color="#FFC65D" material="" geometry="radius: 0.3; height: 6" rotation="90 0 0"></a-cylinder>
-	<a-cylinder position="2.55 3.59219 3" radius="0.5" height="1.5" color="#FFC65D" material="" geometry="radius: 0.3; height: 4" rotation="0 0 30" animation="property: position; to: 0.5385 3.59219 3 dur: 2000; easing: linear; loop: true; dir: alternate;" animation__rot="property: rotation; to: 0 0 -30 dur: 2000; easing: linear; loop: true; dir: alternate;">
-		<a-cylinder position="-0.04963 -2.089 0" radius="0.5" height="1.5" color="#FFC65D" material="" geometry="radius: 0.3; height: 2" rotation="0 0 90"></a-cylinder>
-	</a-cylinder>
-	<a-cylinder position="0.5385 3.59219 2.00" radius="0.5" height="1.5" color="#FFC65D" material="" geometry="radius: 0.3; height: 4" rotation="0 0 -30" animation="property: position; to: 2.55 3.59219 2 dur: 2000; easing: linear; loop: true; dir: alternate;" animation__rot="property: rotation; to: 0 0 30 dur: 2000; easing: linear; loop: true; dir: alternate;">
-		<a-cylinder position="-0.04963 -2.089 0" radius="0.5" height="1.5" color="#FFC65D" material="" geometry="radius: 0.3; height: 2" rotation="0 0 90"></a-cylinder>
-	</a-cylinder>
-	<a-cylinder position="2.55 3.59219 1.00" radius="0.5" height="1.5" color="#FFC65D" material="" geometry="radius: 0.3; height: 4" rotation="0 0 30" animation="property: position; to: 0.5385 3.59219 1 dur: 2000; easing: linear; loop: true; dir: alternate;" animation__rot="property: rotation; to: 0 0 -30 dur: 2000; easing: linear; loop: true; dir: alternate;">
-		<a-cylinder position="-0.04963 -2.089 0" radius="0.5" height="1.5" color="#FFC65D" material="" geometry="radius: 0.3; height: 2" rotation="0 0 90"></a-cylinder>
-	</a-cylinder>
-	<a-cylinder position="0.5385 3.59219 0.00" radius="0.5" height="1.5" color="#FFC65D" material="" geometry="radius: 0.3; height: 4" rotation="0 0 -30" animation="property: position; to: 2.55 3.59219 0 dur: 2000; easing: linear; loop: true; dir: alternate;" animation__rot="property: rotation; to: 0 0 30 dur: 2000; easing: linear; loop: true; dir: alternate;">
-		<a-cylinder position="-0.04963 -2.089 0" radius="0.5" height="1.5" color="#FFC65D" material="" geometry="radius: 0.3; height: 2" rotation="0 0 90"></a-cylinder>
-	</a-cylinder>
-	<a-plane position="0 0.5 0" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
 </a-scene>
 </body>
 </html>
