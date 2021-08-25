@@ -46,40 +46,30 @@ class Maze {
 		this.draw();
 	}
 	addEntranceExit() {
-		let posEnt = Math.floor(Math.random() * 4);
-		let cellEnt = 0;
-		if (posEnt == 0) {
-			cellEnt = Math.floor(Math.random() * this.ncols);
-			this.grid[0][cellEnt].walls.tWall = false;
-		} else if (posEnt == 1) {
-			cellEnt = Math.floor(Math.random() * this.nrows);
-			this.grid[cellEnt][this.ncols - 1].walls.rWall = false;
-		} else if (posEnt == 2) {
-			cellEnt = Math.floor(Math.random() * this.ncols);
-			this.grid[this.nrows - 1][cellEnt].walls.bWall = false;
-		} else if (posEnt == 3) {
-			cellEnt = Math.floor(Math.random() * this.nrows);
-			this.grid[cellEnt][0].walls.lWall = false;
-		}
+		this.grid[0][0].walls.tWall = false;
+		this.grid[0][0].special = specials.NONE;
 		let posEx = 0;
-		let cellEx = 0;
+		let indexEx = 0;
 		do {
 			posEx = Math.floor(Math.random() * 4);
 			if (posEx % 2 == 0) {
-				cellEx = Math.floor(Math.random() * this.ncols);
+				indexEx = Math.floor(Math.random() * this.ncols);
 			} else {
-				cellEx = Math.floor(Math.random() * this.nrows);
+				indexEx = Math.floor(Math.random() * this.nrows);
 			}
-		} while (posEx == posEnt && cellEx == cellEnt);
-		// TODO: Validate by checking if exit is reachable from entrance (maze-solving algorithm)
+		} while (posEx == 0 && indexEx == 0);
 		if (posEx == 0) {
-			this.grid[0][cellEx].walls.tWall = false;
+			this.grid[0][indexEx].walls.tWall = false;
+			this.grid[0][indexEx].special = specials.NONE;
 		} else if (posEx == 1) {
-			this.grid[cellEx][this.ncols - 1].walls.rWall = false;
+			this.grid[indexEx][this.ncols - 1].walls.rWall = false;
+			this.grid[indexEx][this.ncols - 1].special = specials.NONE;
 		} else if (posEx == 2) {
-			this.grid[this.nrows - 1][cellEx].walls.bWall = false;
+			this.grid[this.nrows - 1][indexEx].walls.bWall = false;
+			this.grid[this.nrows - 1][indexEx].special = specials.NONE;
 		} else if (posEx == 3) {
-			this.grid[cellEx][0].walls.lWall = false;
+			this.grid[indexEx][0].walls.lWall = false;
+			this.grid[indexEx][0].special = specials.NONE;
 		}
 	}
 	generateMap() {
@@ -89,18 +79,10 @@ class Maze {
 			for (let c = 0; c < this.ncols; c++) {
 				let grid = this.grid;
 				let val = 0;
-				if (grid[r][c].walls.tWall === true) {
-					val += 1;
-				}
-				if (grid[r][c].walls.rWall === true) {
-					val += 2;
-				}
-				if (grid[r][c].walls.bWall === true) {
-					val += 4;
-				}
-				if (grid[r][c].walls.lWall === true) {
-					val += 8;
-				}
+				if (grid[r][c].walls.tWall === true) val += 1;
+				if (grid[r][c].walls.rWall === true) val += 2;
+				if (grid[r][c].walls.bWall === true) val += 4;
+				if (grid[r][c].walls.lWall === true) val += 8;
 				if (grid[r][c].special === 1) val += 16;
 				if (grid[r][c].special === 2) val += 32;
 				if (grid[r][c].special === 3) val += 64;
@@ -139,7 +121,6 @@ class Cell {
 		        this.special = specials.SPIKES;
 		    }
 		}
-		// TODO: add trap + coins flags, set them randomly with a given probability
 	}
 	checkNeighbours() {
 		let grid = this.mazeGrid;
@@ -150,18 +131,10 @@ class Cell {
 		let right = col !== grid.length - 1 ? grid[row][col + 1] : undefined;
 		let bottom = row !== grid.length - 1 ? grid[row + 1][col] : undefined;
 		let left = col !== 0 ? grid[row][col - 1] : undefined;
-		if (up && !up.reached) {
-			neighbours.push(up);
-		}
-		if (right && !right.reached) {
-			neighbours.push(right);
-		}
-		if (bottom && !bottom.reached) {
-			neighbours.push(bottom);
-		}
-		if (left && !left.reached) {
-			neighbours.push(left);
-		}
+		if (up && !up.reached) neighbours.push(up);
+		if (right && !right.reached) neighbours.push(right);
+		if (bottom && !bottom.reached) neighbours.push(bottom);
+		if (left && !left.reached) neighbours.push(left);
 		if (neighbours.length !== 0) {
 			let temp = Math.floor(Math.random() * neighbours.length);
 			return neighbours[temp];
@@ -194,25 +167,21 @@ newMaze.addEntranceExit();
 newMaze.draw();
 let map = newMaze.generateMap();
 AFRAME.registerComponent("mymaze", {
-    // TODO: rewrite static element generation using three.js
     // TODO: add textures
 	init: function() {
 	var scene = this.el.sceneEl.object3D;
+	const sideGeometry = new THREE.BoxGeometry(4, 4, 0.1);
+	const wallMaterial = new THREE.MeshBasicMaterial( {color: 0x843c24});
+	const floorMaterial = new THREE.MeshBasicMaterial( {color: 0xf2c5a6});
 		for (let r = 0; r < newMaze.nrows; r++) {
 			for (let c = 0; c < newMaze.ncols; c++) {
 				let tmpVal = map[r][c];
-				var box = document.createElement("a-box");
-				box.setAttribute("height", "4");
-				box.setAttribute("width", "4");
-				box.setAttribute("depth", "0.1");
-				box.setAttribute("rotation", "90 0 0");
-				box.setAttribute("color", "green");
-				box.setAttribute("position", {
-					x: 0 + c * 4,
-					y: 0,
-					z: 0 + r * 4
-				});
-				this.el.appendChild(box);
+				const floor = new THREE.Mesh(sideGeometry, floorMaterial);
+				floor.rotation.x = Math.PI / 2;
+				floor.position.x = 0 + c * 4;
+				floor.position.y = 0;
+				floor.position.z = 0 + r * 4;
+				scene.add(floor);
 				if (tmpVal >= 64) {
 				    tmpVal -= 64;
 					for (var row = 0; row <= 9; row += 1) {
@@ -234,13 +203,13 @@ AFRAME.registerComponent("mymaze", {
 				}
 				if (tmpVal >= 32) {
 				    tmpVal -= 32;
-					var cylinderLeft = document.createElement("a-cylinder");
-					cylinderLeft.setAttribute("height", "4");
-					cylinderLeft.setAttribute("radius", "0.3");
-					cylinderLeft.setAttribute("color", "#FFC65D");
-					cylinderLeft.setAttribute("rotation", "0 0 0");
-					cylinderLeft.setAttribute("animation", "property: rotation; to: 0 360 0 dur: 2000; easing: linear; loop: true;");
-					cylinderLeft.setAttribute("position", {
+					var trunk = document.createElement("a-cylinder");
+					trunk.setAttribute("height", "4");
+					trunk.setAttribute("radius", "0.3");
+					trunk.setAttribute("color", "#FFC65D");
+					trunk.setAttribute("rotation", "0 0 0");
+					trunk.setAttribute("animation", "property: rotation; to: 0 360 0 dur: 2000; easing: linear; loop: true;");
+					trunk.setAttribute("position", {
 						x: 0 + c * 4,
 						y: 2,
 						z: 0 + r * 4
@@ -256,87 +225,64 @@ AFRAME.registerComponent("mymaze", {
 							y: -1.75 + i,
 							z: 0
 						});
-						cylinderLeft.appendChild(branch);
+						trunk.appendChild(branch);
 					}
-					this.el.appendChild(cylinderLeft);
+					this.el.appendChild(trunk);
 
 
 				}
 				if (tmpVal >= 16) {
 				    tmpVal -= 16;
-				    const geometry = new THREE.CylinderGeometry(0.5, 0.5, 0.1, 16);
-				    const material = new THREE.MeshBasicMaterial( {color: 0xffff00});
-				    const coin = new THREE.Mesh(geometry, material);
-				    coin.position.x = 0 + c * 4;
-				    coin.position.y = 2;
-				    coin.position.z = 0 + r * 4;
-					coin.rotation.x = Math.PI / 2;
-					coin.rotation.z = Math.PI / 4;
-				    scene.add(coin);
+					var coin = document.createElement("a-cylinder");
+					coin.setAttribute("height", "0.1");
+					coin.setAttribute("radius", "0.5");
+					coin.setAttribute("color", "#FFFF00");
+					coin.setAttribute("rotation", "90 0 0");
+					coin.setAttribute("animation", "property: rotation; to: 90 360 0 dur: 2000; easing: linear; loop: true;");
+					coin.setAttribute("position", {
+						x: 0 + c * 4,
+						y: 0.6,
+						z: 0 + r * 4
+					});
+					this.el.appendChild(coin);
 				}
 				if (tmpVal >= 8) {
 					tmpVal -= 8;
-					var lWall = document.createElement("a-box");
-					lWall.setAttribute("height", "4");
-					lWall.setAttribute("width", "4");
-					lWall.setAttribute("depth", "0.1");
-					lWall.setAttribute("color", "blue");
-					lWall.setAttribute("rotation", "0 90 0");
-					lWall.setAttribute("position", {
-						x: -2 + c * 4,
-						y: 2,
-						z: 0 + r * 4
-					});
-					this.el.appendChild(lWall);
+					const lWall = new THREE.Mesh(sideGeometry, wallMaterial);
+					lWall.rotation.y = Math.PI / 2;
+					lWall.position.x = -2 + c * 4;
+					lWall.position.y = 2;
+					lWall.position.z = 0 + r * 4;
+					scene.add(lWall);
 				}
 				if (tmpVal >= 4) {
 					tmpVal -= 4;
 					if (r === newMaze.nrows - 1) {
-						var bWall = document.createElement("a-box");
-						bWall.setAttribute("height", "4");
-						bWall.setAttribute("width", "4");
-						bWall.setAttribute("depth", "0.1");
-						bWall.setAttribute("color", "red");
-						bWall.setAttribute("rotation", "0 0 0");
-						bWall.setAttribute("position", {
-							x: 0 + c * 4,
-							y: 2,
-							z: 2 + r * 4
-						});
-						this.el.appendChild(bWall);
+						const bWall = new THREE.Mesh(sideGeometry, wallMaterial);
+						bWall.position.x = 0 + c * 4;
+						bWall.position.y = 2;
+						bWall.position.z = 2 + r * 4;
+						scene.add(bWall);
 					}
 				}
 				if (tmpVal >= 2) {
 					tmpVal -= 2;
 					if (c === newMaze.ncols - 1) {
-						var rWall = document.createElement("a-box");
-						rWall.setAttribute("height", "4");
-						rWall.setAttribute("width", "4");
-						rWall.setAttribute("depth", "0.1");
-						rWall.setAttribute("color", "yellow");
-						rWall.setAttribute("rotation", "0 90 0");
-						rWall.setAttribute("position", {
-							x: 2 + c * 4,
-							y: 2,
-							z: 0 + r * 4
-						});
-						this.el.appendChild(rWall);
+						const rWall = new THREE.Mesh(sideGeometry, wallMaterial);
+						rWall.rotation.y = Math.PI / 2;
+						rWall.position.x = 2 + c * 4;
+						rWall.position.y = 2;
+						rWall.position.z = 0 + r * 4;
+						scene.add(rWall);
 					}
 				}
 				if (tmpVal >= 1) {
 					tmpVal -= 1;
-					var tWall = document.createElement("a-box");
-					tWall.setAttribute("height", "4");
-					tWall.setAttribute("width", "4");
-					tWall.setAttribute("depth", "0.1");
-					tWall.setAttribute("color", "blue");
-					tWall.setAttribute("rotation", "0 0 0");
-					tWall.setAttribute("position", {
-						x: 0 + c * 4,
-						y: 2,
-						z: -2 + r * 4
-					});
-					this.el.appendChild(tWall);
+					const tWall = new THREE.Mesh(sideGeometry, wallMaterial);
+					tWall.position.x = 0 + c * 4;
+					tWall.position.y = 2;
+					tWall.position.z = -2 + r * 4;
+					scene.add(tWall);
 				}
 			}
 		}
