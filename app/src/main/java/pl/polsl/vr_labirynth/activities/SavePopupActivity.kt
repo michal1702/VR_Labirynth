@@ -1,6 +1,7 @@
 package pl.polsl.vr_labirynth.activities
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.Window
@@ -28,6 +29,8 @@ class SavePopupActivity : AppCompatActivity(), IHideActionBar, ITouchAnimation, 
     private val saveSlot2OnLongClickListener = View.OnLongClickListener { slot2LongClicked() }
     private val saveSlot3OnLongClickListener = View.OnLongClickListener { slot3LongClicked() }
 
+    private val closeGameOnClickListener = View.OnClickListener { closeGameButtonClicked() }
+
     private var slot1EnableSave = false
     private var slot2EnableSave = false
     private var slot3EnableSave = false
@@ -43,9 +46,11 @@ class SavePopupActivity : AppCompatActivity(), IHideActionBar, ITouchAnimation, 
         buttonTouched(binding.saveSlot1)
         buttonTouched(binding.saveSlot2)
         buttonTouched(binding.saveSlot3)
+        buttonTouched(binding.closeGameButton)
         imageButtonTouched(binding.cancelButton)
 
         binding.cancelButton.setOnClickListener { finish() }
+        binding.closeGameButton.setOnClickListener(closeGameOnClickListener)
         binding.saveSlot1.setOnClickListener(saveSlot1OnClickListener)
         binding.saveSlot2.setOnClickListener(saveSlot2OnClickListener)
         binding.saveSlot3.setOnClickListener(saveSlot3OnClickListener)
@@ -53,6 +58,16 @@ class SavePopupActivity : AppCompatActivity(), IHideActionBar, ITouchAnimation, 
         binding.saveSlot1.setOnLongClickListener(saveSlot1OnLongClickListener)
         binding.saveSlot2.setOnLongClickListener(saveSlot2OnLongClickListener)
         binding.saveSlot3.setOnLongClickListener(saveSlot3OnLongClickListener)
+    }
+
+    /**
+     * Exits current game
+     */
+    private fun closeGameButtonClicked() {
+        val intent = Intent()
+        intent.putExtra("exitGame", true)
+        setResult(RESULT_OK, intent)
+        finish()
     }
 
     /**
@@ -77,7 +92,7 @@ class SavePopupActivity : AppCompatActivity(), IHideActionBar, ITouchAnimation, 
      * Performs save to a certain save slot
      * @param button
      */
-    private fun performSave(button: Button, slot: GameSaveModel.SaveSlots){
+    private fun performSave(button: Button, slot: GameSaveModel.SaveSlots) {
         val gameSaveModel = GameSaveModel(this, slot)
         gameSaveModel.save(SaveEntity()) //tmp values
         button.text = this.resources.getString(R.string.game_saved)
@@ -139,9 +154,9 @@ class SavePopupActivity : AppCompatActivity(), IHideActionBar, ITouchAnimation, 
      * Removes save from a slot no. 1
      * @return Boolean
      */
-    private fun slot1LongClicked(): Boolean{
+    private fun slot1LongClicked(): Boolean {
         val gameSave = GameSaveModel(this, GameSaveModel.SaveSlots.Slot1)
-        if(gameSave.ifFileExists()) {
+        if (gameSave.ifFileExists()) {
             gameSave.removeSave()
             binding.saveSlot1.text = this.resources.getString(R.string.empty_save)
         }
@@ -152,9 +167,9 @@ class SavePopupActivity : AppCompatActivity(), IHideActionBar, ITouchAnimation, 
      * Removes save from a slot no. 1
      * @return Boolean
      */
-    private fun slot2LongClicked(): Boolean{
+    private fun slot2LongClicked(): Boolean {
         val gameSave = GameSaveModel(this, GameSaveModel.SaveSlots.Slot2)
-        if(gameSave.ifFileExists()) {
+        if (gameSave.ifFileExists()) {
             gameSave.removeSave()
             binding.saveSlot2.text = this.resources.getString(R.string.empty_save)
         }
@@ -165,9 +180,9 @@ class SavePopupActivity : AppCompatActivity(), IHideActionBar, ITouchAnimation, 
      * Removes save from a slot no. 1
      * @return Boolean
      */
-    private fun slot3LongClicked(): Boolean{
+    private fun slot3LongClicked(): Boolean {
         val gameSave = GameSaveModel(this, GameSaveModel.SaveSlots.Slot3)
-        if(gameSave.ifFileExists()) {
+        if (gameSave.ifFileExists()) {
             gameSave.removeSave()
             binding.saveSlot3.text = this.resources.getString(R.string.empty_save)
         }

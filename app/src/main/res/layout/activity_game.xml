@@ -9,23 +9,14 @@
 
     <WebView
         android:id="@+id/gameWebView"
-        android:layout_width="669dp"
-        android:layout_height="333dp"
+        android:layout_width="753dp"
+        android:layout_height="414dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toTopOf="parent">
 
 
     </WebView>
 
-    <Button
-        android:id="@+id/testButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="test"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
