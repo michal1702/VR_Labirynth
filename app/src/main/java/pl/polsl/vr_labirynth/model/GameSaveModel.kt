@@ -42,11 +42,14 @@ class GameSaveModel(context: Context, slotName: SaveSlots? = null) {
      */
     fun save(saveEntity: SaveEntity){
         val jObject = JSONObject()
+        jObject.put("offsetX", saveEntity.offsetX)
+        jObject.put("offsetZ", saveEntity.offsetZ)
         jObject.put("positionX", saveEntity.positionX)
         jObject.put("positionY", saveEntity.positionY)
         jObject.put("positionZ", saveEntity.positionZ)
-        jObject.put("score", saveEntity.score)
-        jObject.put("seed", saveEntity.seed)
+        jObject.put("points", saveEntity.points)
+        jObject.put("hearts", saveEntity.hearts)
+        jObject.put("map", saveEntity.map)
 
         val jString = jObject.toString()
         IOUtil.writeJsonToFile(fileLocation, jString)

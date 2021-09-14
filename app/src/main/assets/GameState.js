@@ -20,4 +20,7 @@ class GameState {
 	updateHearts() {
 		this.hearts--;
 	}
+	updateCoins(row, column){
+		this.map[row][column] =  this.map[row][column] - 16;
+	}
 }

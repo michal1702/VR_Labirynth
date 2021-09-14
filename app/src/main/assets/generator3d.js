@@ -2,7 +2,7 @@ let ourMaze = new Maze(5, 5, 0.5, 0.09, 0.01);
 ourMaze.init();
 ourMaze.addEntranceExit();
 ourMaze.draw();
-let gameState = new GameState(0.8, 1.6, 0.8, 0, 5, ourMaze.generateMap(), 2 * (ourMaze.ncols - 1), 2 * (ourMaze.ncols - 1))
+var gameState = new GameState(0.8, 1.6, 0.8, 0, 5, ourMaze.generateMap(), 2 * (ourMaze.ncols - 1), 2 * (ourMaze.ncols - 1))
 AFRAME.registerComponent("mymaze", {
 	schema: {
 		posX: {
@@ -111,6 +111,7 @@ AFRAME.registerComponent("mymaze", {
 				if(tmpVal >= 16) {
 					tmpVal -= 16;
 					var coin = document.createElement("a-cylinder");
+					coin.setAttribute("id", "coin"+"_"+r+"_"+c)
 					coin.setAttribute("class", "coin");
 					coin.setAttribute("height", "0.1");
 					coin.setAttribute("radius", "0.5");
@@ -199,6 +200,7 @@ AFRAME.registerComponent("mymaze", {
 	tick: function() {
 		var player = document.querySelector("#player");
 		var intersectedList = player.components['aabb-collider']['intersectedEls'];
+		
 		if(intersectedList.length === 0) {
 			this.el.setAttribute("posX", player.getAttribute("position").x);
 			this.el.setAttribute("posY", player.getAttribute("position").y);
@@ -217,13 +219,20 @@ AFRAME.registerComponent("mymaze", {
 					});
 				} else if(intersectedType == "coin") {
 					var el = intersectedList[i];
+					var id = el.getAttribute("id");
+					const idParts = id.split('_');
+					var row = idParts[1];
+					var column = idParts[2];
+					gameState.updateCoins(row, column);
+					console.log(row);
+					console.log(column)
+					console.log(gameState.map);
 					console.log(el);
 					el.parentNode.removeChild(el);
 					console.log("success");
 					intersectedList.splice(i);
 					gameState.updatePoints();
 					console.log(gameState.points);
-					//TODO: translate coin position to row and cell, decrement gamestate map cell by 16, alternatively give coins ids based on row and cell when creating them
 				} else {
 					gameState.updateHearts();
 					console.log(gameState.hearts);
@@ -235,5 +244,5 @@ AFRAME.registerComponent("mymaze", {
 })
 
 function saveGameState() {
-	console.log(JSON.stringify(gameState))
+	return gameState;
 }

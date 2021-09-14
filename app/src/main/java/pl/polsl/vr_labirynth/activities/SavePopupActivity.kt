@@ -14,6 +14,7 @@ import pl.polsl.vr_labirynth.interfaces.IHideActionBar
 import pl.polsl.vr_labirynth.interfaces.IToast
 import pl.polsl.vr_labirynth.interfaces.ITouchAnimation
 import pl.polsl.vr_labirynth.model.GameSaveModel
+import android.util.Log
 
 class SavePopupActivity : AppCompatActivity(), IHideActionBar, ITouchAnimation, IToast {
 
@@ -35,10 +36,30 @@ class SavePopupActivity : AppCompatActivity(), IHideActionBar, ITouchAnimation, 
     private var slot2EnableSave = false
     private var slot3EnableSave = false
 
+    private var offsetX: Double = 0.0
+    private var offsetZ: Double = 0.0
+    private var positionX: Double = 0.0
+    private var positionY: Double = 0.0
+    private var positionZ: Double = 0.0
+    private var points: Int = 0
+    private var hearts: Int = 0
+    private var map: IntArray? = intArrayOf(0)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySavePopupBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        this.offsetX = intent.getDoubleExtra("offsetX", 0.0)
+        this.offsetZ = intent.getDoubleExtra("offsetZ", 0.0)
+        this.positionX = intent.getDoubleExtra("positionX", 0.0)
+        this.positionY = intent.getDoubleExtra("positionY", 0.0)
+        this.positionZ = intent.getDoubleExtra("positionZ", 0.0)
+        this.points = intent.getIntExtra("points", 0)
+        this.hearts = intent.getIntExtra("hearts", 0)
+        this.map = intent.getIntArrayExtra("map")
+
+
 
         hideActionBar()
         checkSaves()
@@ -58,6 +79,8 @@ class SavePopupActivity : AppCompatActivity(), IHideActionBar, ITouchAnimation, 
         binding.saveSlot1.setOnLongClickListener(saveSlot1OnLongClickListener)
         binding.saveSlot2.setOnLongClickListener(saveSlot2OnLongClickListener)
         binding.saveSlot3.setOnLongClickListener(saveSlot3OnLongClickListener)
+
+
     }
 
     /**
@@ -93,8 +116,13 @@ class SavePopupActivity : AppCompatActivity(), IHideActionBar, ITouchAnimation, 
      * @param button
      */
     private fun performSave(button: Button, slot: GameSaveModel.SaveSlots) {
+        Log.e("map", this.map.toString())
+        Log.e("posX", this.positionX.toString())
+
+
         val gameSaveModel = GameSaveModel(this, slot)
-        gameSaveModel.save(SaveEntity()) //tmp values
+
+        gameSaveModel.save(SaveEntity(this.offsetX, this.offsetZ, this.positionX, this.positionY, this.positionZ, this.points, this.hearts, this.map))
         button.text = this.resources.getString(R.string.game_saved)
         shortToast("Game saved")
     }
