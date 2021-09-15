@@ -1,8 +1,24 @@
-let ourMaze = new Maze(5, 5, 0.5, 0.09, 0.01);
-ourMaze.init();
-ourMaze.addEntranceExit();
-ourMaze.draw();
-var gameState = new GameState(0.8, 1.6, 0.8, 0, 5, ourMaze.generateMap(), 2 * (ourMaze.ncols - 1), 2 * (ourMaze.ncols - 1))
+/* if(android.checkLoad()){
+	let ourMaze = new Maze(5, 5, 0.5, 0.09, 0.01);
+	ourMaze.init();
+	ourMaze.addEntranceExit();
+	ourMaze.draw();
+	var gameState = new GameState(0.8, 1.6, 0.8, 0, 5, ourMaze.generateMap(), 2 * (ourMaze.ncols - 1), 2 * (ourMaze.ncols - 1))
+}else {
+	var gameState = new GameState();
+}	  */
+
+	let ourMaze = new Maze(5, 5, 0.5, 0.09, 0.01);
+	ourMaze.init();
+	ourMaze.addEntranceExit();
+	ourMaze.draw();
+	var multiArray = ourMaze.generateMap();
+	console.log(multiArray);
+	var flatArray = multiArray.flat();
+	var gameState = new GameState(0.8, 1.6, 0.8, 0, 5, flatArray, 2 * (ourMaze.ncols - 1), 2 * (ourMaze.ncols - 1))
+	
+	console.log(gameState);
+
 AFRAME.registerComponent("mymaze", {
 	schema: {
 		posX: {
@@ -57,7 +73,8 @@ AFRAME.registerComponent("mymaze", {
 		this.el.appendChild(player);
 		for(let r = 0; r < ourMaze.nrows; r++) {
 			for(let c = 0; c < ourMaze.ncols; c++) {
-				let tmpVal = gameState.map[r][c];
+				let tmpVal = gameState.map[r*5+c];
+				console.log(r*5+c);
 				if(tmpVal >= 64) {
 					tmpVal -= 64;
 					/*	for (var row = 0; row <= 9; row += 1) {
