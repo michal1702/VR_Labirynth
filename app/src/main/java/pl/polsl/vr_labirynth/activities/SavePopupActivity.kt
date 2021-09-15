@@ -49,8 +49,10 @@ class SavePopupActivity : AppCompatActivity(), IHideActionBar, ITouchAnimation, 
         super.onCreate(savedInstanceState)
         binding = ActivitySavePopupBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        this.offsetX = intent.getDoubleExtra("offsetX", 0.0)
+		
+		var intent: Intent = getIntent()
+        
+		this.offsetX = intent.getDoubleExtra("offsetX", 0.0)
         this.offsetZ = intent.getDoubleExtra("offsetZ", 0.0)
         this.positionX = intent.getDoubleExtra("positionX", 0.0)
         this.positionY = intent.getDoubleExtra("positionY", 0.0)

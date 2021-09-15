@@ -2,9 +2,9 @@ class GameState {
 	constructor(positionX, positionY, positionZ, points, hearts, map, offsetX, offsetZ) {
 		this.offsetX = offsetX;
 		this.offsetZ = offsetZ;
-		this.positionX = positionX - offsetX;
+		this.positionX = positionX;
 		this.positionY = positionY;
-		this.positionZ = positionZ - offsetZ;
+		this.positionZ = positionZ;
 		this.points = points;
 		this.hearts = hearts;
 		this.map = map;

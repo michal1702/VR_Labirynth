@@ -12,6 +12,9 @@ import pl.polsl.vr_labirynth.interfaces.IBackgroundAnimation
 import pl.polsl.vr_labirynth.interfaces.IHideActionBar
 import pl.polsl.vr_labirynth.interfaces.ITouchAnimation
 import pl.polsl.vr_labirynth.model.GameSaveModel
+import android.util.JsonReader
+import java.io.StringReader
+import org.json.JSONObject
 
 class LoadGameActivity() : AppCompatActivity(), IBackgroundAnimation, ITouchAnimation,
     IHideActionBar {
@@ -81,9 +84,52 @@ class LoadGameActivity() : AppCompatActivity(), IBackgroundAnimation, ITouchAnim
     private fun loadButton1Clicked() {
         val gameSave = GameSaveModel(this, GameSaveModel.SaveSlots.Slot1)
         if (gameSave.ifFileExists()) {
-            gameSave.load()
+            val save = gameSave.load()
+			parseSaveAndRun(save)
         } else runGame()
     }
+	
+	private fun parseSaveAndRun(save : JSONObject?) {
+				val gameIntent = Intent(this, GameActivity::class.java)
+				var reader : JsonReader = JsonReader(StringReader(save.toString()))
+                reader.beginObject()
+                while(reader.hasNext()){
+                    var fieldName: String = reader.nextName()
+                    if(fieldName.equals("offsetX")){
+                        gameIntent.putExtra("offsetX", reader.nextDouble())
+                    } else if(fieldName.equals("offsetZ")){
+                        gameIntent.putExtra("offsetZ", reader.nextDouble())
+                    } else if(fieldName.equals("positionX")){
+                        gameIntent.putExtra("positionX", reader.nextDouble())
+                    } else if(fieldName.equals("positionY")){
+                        gameIntent.putExtra("positionY", reader.nextDouble())
+                    } else if(fieldName.equals("positionZ")){
+                        gameIntent.putExtra("positionZ", reader.nextDouble())
+                    } else if(fieldName.equals("points")){
+                        gameIntent.putExtra("points", reader.nextInt())
+                    } else if(fieldName.equals("hearts")){
+                        gameIntent.putExtra("hearts", reader.nextInt())
+                    } else if(fieldName.equals("map")){
+						gameIntent.putIntegerArrayListExtra("map", readIntArray(reader))
+                    } else {
+                        reader.skipValue()
+                    }
+                    reader.endObject()
+                }
+				startActivity(gameIntent)
+	}
+	
+	 fun readIntArray(reader: JsonReader) : ArrayList<Int> {
+        var values : ArrayList<Int> = ArrayList<Int>()
+
+        reader.beginArray()
+        while(reader.hasNext()) {
+            values.add(reader.nextInt())
+        }
+        reader.endArray()
+        return values
+    }
+
 
     /**
      * Loads save from slot 2 or starts a new game
