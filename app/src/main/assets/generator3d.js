@@ -1,21 +1,32 @@
-/* if(android.checkLoad()){
-	let ourMaze = new Maze(5, 5, 0.5, 0.09, 0.01);
-	ourMaze.init();
-	ourMaze.addEntranceExit();
-	ourMaze.draw();
-	var gameState = new GameState(0.8, 1.6, 0.8, 0, 5, ourMaze.generateMap(), 2 * (ourMaze.ncols - 1), 2 * (ourMaze.ncols - 1))
+ if(!android.checkLoad()){
+	var ourMaze = new Maze(5, 5, 0.5, 0.09, 0.01);
+    	ourMaze.init();
+    	ourMaze.addEntranceExit();
+    	ourMaze.draw();
+    	var multiArray = ourMaze.generateMap();
+    	console.log(multiArray);
+    	var flatArray = multiArray.flat();
+    	var gameState = new GameState(0.8, 1.6, 0.8, 0, 5, flatArray, 2 * (ourMaze.ncols - 1), 2 * (ourMaze.ncols - 1))
 }else {
-	var gameState = new GameState();
-}	  */
+	var posX = android.getPositionX();
+	var posY = android.getPositionY();
+	var posZ = android.getPositionZ();
+	var points = android.getPoints();
+	var hearts = android.getHearts();
+	var map = android.getMap();
+	var offsetX = android.getOffsetX();
+	var offsetZ = android.getOffsetZ();
+	var gameState = new GameState(posX, posY, posZ, points, hearts, map, offsetX, offsetZ);
+}
 
-	let ourMaze = new Maze(5, 5, 0.5, 0.09, 0.01);
+	/*let ourMaze = new Maze(5, 5, 0.5, 0.09, 0.01);
 	ourMaze.init();
 	ourMaze.addEntranceExit();
 	ourMaze.draw();
 	var multiArray = ourMaze.generateMap();
 	console.log(multiArray);
 	var flatArray = multiArray.flat();
-	var gameState = new GameState(0.8, 1.6, 0.8, 0, 5, flatArray, 2 * (ourMaze.ncols - 1), 2 * (ourMaze.ncols - 1))
+	var gameState = new GameState(0.8, 1.6, 0.8, 0, 5, flatArray, 2 * (ourMaze.ncols - 1), 2 * (ourMaze.ncols - 1))*/
 	
 	console.log(gameState);
 

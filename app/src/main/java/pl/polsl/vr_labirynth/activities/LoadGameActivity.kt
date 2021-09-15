@@ -3,18 +3,18 @@ package pl.polsl.vr_labirynth.activities
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.JsonReader
 import android.view.View
 import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
+import org.json.JSONObject
 import pl.polsl.vr_labirynth.R
 import pl.polsl.vr_labirynth.databinding.ActivityLoadGameBinding
 import pl.polsl.vr_labirynth.interfaces.IBackgroundAnimation
 import pl.polsl.vr_labirynth.interfaces.IHideActionBar
 import pl.polsl.vr_labirynth.interfaces.ITouchAnimation
 import pl.polsl.vr_labirynth.model.GameSaveModel
-import android.util.JsonReader
 import java.io.StringReader
-import org.json.JSONObject
 
 class LoadGameActivity() : AppCompatActivity(), IBackgroundAnimation, ITouchAnimation,
     IHideActionBar {
@@ -85,45 +85,56 @@ class LoadGameActivity() : AppCompatActivity(), IBackgroundAnimation, ITouchAnim
         val gameSave = GameSaveModel(this, GameSaveModel.SaveSlots.Slot1)
         if (gameSave.ifFileExists()) {
             val save = gameSave.load()
-			parseSaveAndRun(save)
+            parseSaveAndRun(save)
         } else runGame()
     }
-	
-	private fun parseSaveAndRun(save : JSONObject?) {
-				val gameIntent = Intent(this, GameActivity::class.java)
-				var reader : JsonReader = JsonReader(StringReader(save.toString()))
-                reader.beginObject()
-                while(reader.hasNext()){
-                    var fieldName: String = reader.nextName()
-                    if(fieldName.equals("offsetX")){
-                        gameIntent.putExtra("offsetX", reader.nextDouble())
-                    } else if(fieldName.equals("offsetZ")){
-                        gameIntent.putExtra("offsetZ", reader.nextDouble())
-                    } else if(fieldName.equals("positionX")){
-                        gameIntent.putExtra("positionX", reader.nextDouble())
-                    } else if(fieldName.equals("positionY")){
-                        gameIntent.putExtra("positionY", reader.nextDouble())
-                    } else if(fieldName.equals("positionZ")){
-                        gameIntent.putExtra("positionZ", reader.nextDouble())
-                    } else if(fieldName.equals("points")){
-                        gameIntent.putExtra("points", reader.nextInt())
-                    } else if(fieldName.equals("hearts")){
-                        gameIntent.putExtra("hearts", reader.nextInt())
-                    } else if(fieldName.equals("map")){
-						gameIntent.putIntegerArrayListExtra("map", readIntArray(reader))
-                    } else {
+
+    private fun parseSaveAndRun(save: JSONObject?) {
+        val reader = JsonReader(StringReader(save.toString()))
+        val gameIntent = Intent(this, GameActivity::class.java).apply {
+            reader.beginObject()
+            while (reader.hasNext()) {
+                when (reader.nextName()) {
+                    "offsetX" -> {
+                        putExtra("offsetX", reader.nextDouble())
+                    }
+                    "offsetZ" -> {
+                        putExtra("offsetZ", reader.nextDouble())
+                    }
+                    "positionX" -> {
+                        putExtra("positionX", reader.nextDouble())
+                    }
+                    "positionY" -> {
+                        putExtra("positionY", reader.nextDouble())
+                    }
+                    "positionZ" -> {
+                        putExtra("positionZ", reader.nextDouble())
+                    }
+                    "points" -> {
+                        putExtra("points", reader.nextInt())
+                    }
+                    "hearts" -> {
+                        putExtra("hearts", reader.nextInt())
+                    }
+                    "map" -> {
+                        val map = readIntArray(reader)
+                        putIntegerArrayListExtra("map", map)
+                    }
+                    else -> {
                         reader.skipValue()
                     }
-                    reader.endObject()
                 }
-				startActivity(gameIntent)
-	}
-	
-	 fun readIntArray(reader: JsonReader) : ArrayList<Int> {
-        var values : ArrayList<Int> = ArrayList<Int>()
+            }
+            reader.endObject()
+        }
+        startActivity(gameIntent)
+    }
+
+    private fun readIntArray(reader: JsonReader): ArrayList<Int> {
+        val values: ArrayList<Int> = ArrayList()
 
         reader.beginArray()
-        while(reader.hasNext()) {
+        while (reader.hasNext()) {
             values.add(reader.nextInt())
         }
         reader.endArray()
@@ -157,7 +168,7 @@ class LoadGameActivity() : AppCompatActivity(), IBackgroundAnimation, ITouchAnim
      */
     private fun loadButton1LongClicked(): Boolean {
         val gameSave = GameSaveModel(this, GameSaveModel.SaveSlots.Slot1)
-        if(gameSave.ifFileExists()) {
+        if (gameSave.ifFileExists()) {
             gameSave.removeSave()
             binding.loadButton1.text = this.resources.getString(R.string.empty_slot)
         }
@@ -170,7 +181,7 @@ class LoadGameActivity() : AppCompatActivity(), IBackgroundAnimation, ITouchAnim
      */
     private fun loadButton2LongClicked(): Boolean {
         val gameSave = GameSaveModel(this, GameSaveModel.SaveSlots.Slot2)
-        if(gameSave.ifFileExists()) {
+        if (gameSave.ifFileExists()) {
             gameSave.removeSave()
             binding.loadButton2.text = this.resources.getString(R.string.empty_slot)
         }
@@ -183,7 +194,7 @@ class LoadGameActivity() : AppCompatActivity(), IBackgroundAnimation, ITouchAnim
      */
     private fun loadButton3LongClicked(): Boolean {
         val gameSave = GameSaveModel(this, GameSaveModel.SaveSlots.Slot3)
-        if(gameSave.ifFileExists()) {
+        if (gameSave.ifFileExists()) {
             gameSave.removeSave()
             binding.loadButton3.text = this.resources.getString(R.string.empty_slot)
         }

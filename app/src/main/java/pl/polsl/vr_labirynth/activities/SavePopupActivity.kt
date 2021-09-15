@@ -49,8 +49,6 @@ class SavePopupActivity : AppCompatActivity(), IHideActionBar, ITouchAnimation, 
         super.onCreate(savedInstanceState)
         binding = ActivitySavePopupBinding.inflate(layoutInflater)
         setContentView(binding.root)
-		
-		var intent: Intent = getIntent()
         
 		this.offsetX = intent.getDoubleExtra("offsetX", 0.0)
         this.offsetZ = intent.getDoubleExtra("offsetZ", 0.0)
@@ -59,9 +57,8 @@ class SavePopupActivity : AppCompatActivity(), IHideActionBar, ITouchAnimation, 
         this.positionZ = intent.getDoubleExtra("positionZ", 0.0)
         this.points = intent.getIntExtra("points", 0)
         this.hearts = intent.getIntExtra("hearts", 0)
-        this.map = intent.getIntArrayExtra("map")
-
-
+        val map = intent.getIntegerArrayListExtra("map")
+        this.map = map?.toIntArray() ?: intArrayOf(0)
 
         hideActionBar()
         checkSaves()
@@ -120,7 +117,6 @@ class SavePopupActivity : AppCompatActivity(), IHideActionBar, ITouchAnimation, 
     private fun performSave(button: Button, slot: GameSaveModel.SaveSlots) {
         Log.e("map", this.map.toString())
         Log.e("posX", this.positionX.toString())
-
 
         val gameSaveModel = GameSaveModel(this, slot)
 

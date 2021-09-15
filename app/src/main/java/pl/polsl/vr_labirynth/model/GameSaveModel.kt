@@ -2,6 +2,7 @@ package pl.polsl.vr_labirynth.model
 
 import android.content.Context
 import android.util.Log
+import org.json.JSONArray
 import org.json.JSONObject
 import pl.polsl.vr_labirynth.entities.SaveEntity
 import pl.polsl.vr_labirynth.utils.IOUtil
@@ -42,6 +43,11 @@ class GameSaveModel(context: Context, slotName: SaveSlots? = null) {
      */
     fun save(saveEntity: SaveEntity){
         val jObject = JSONObject()
+        val array = JSONArray()
+        val map = saveEntity.map ?: intArrayOf(0)
+        for(item in map){
+            array.put(item)
+        }
         jObject.put("offsetX", saveEntity.offsetX)
         jObject.put("offsetZ", saveEntity.offsetZ)
         jObject.put("positionX", saveEntity.positionX)
@@ -49,7 +55,7 @@ class GameSaveModel(context: Context, slotName: SaveSlots? = null) {
         jObject.put("positionZ", saveEntity.positionZ)
         jObject.put("points", saveEntity.points)
         jObject.put("hearts", saveEntity.hearts)
-        jObject.put("map", saveEntity.map)
+        jObject.put("map", array)
 
         val jString = jObject.toString()
         IOUtil.writeJsonToFile(fileLocation, jString)
