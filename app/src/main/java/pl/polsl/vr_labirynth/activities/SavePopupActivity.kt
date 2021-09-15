@@ -36,8 +36,8 @@ class SavePopupActivity : AppCompatActivity(), IHideActionBar, ITouchAnimation, 
     private var slot2EnableSave = false
     private var slot3EnableSave = false
 
-    private var offsetX: Double = 0.0
-    private var offsetZ: Double = 0.0
+    private var columns: Int = 0
+    private var rows: Int = 0
     private var positionX: Double = 0.0
     private var positionY: Double = 0.0
     private var positionZ: Double = 0.0
@@ -50,8 +50,8 @@ class SavePopupActivity : AppCompatActivity(), IHideActionBar, ITouchAnimation, 
         binding = ActivitySavePopupBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
-		this.offsetX = intent.getDoubleExtra("offsetX", 0.0)
-        this.offsetZ = intent.getDoubleExtra("offsetZ", 0.0)
+		this.columns = intent.getIntExtra("columns", 0)
+        this.rows = intent.getIntExtra("rows", 0)
         this.positionX = intent.getDoubleExtra("positionX", 0.0)
         this.positionY = intent.getDoubleExtra("positionY", 0.0)
         this.positionZ = intent.getDoubleExtra("positionZ", 0.0)
@@ -115,12 +115,10 @@ class SavePopupActivity : AppCompatActivity(), IHideActionBar, ITouchAnimation, 
      * @param button
      */
     private fun performSave(button: Button, slot: GameSaveModel.SaveSlots) {
-        Log.e("map", this.map.toString())
-        Log.e("posX", this.positionX.toString())
-
+        Log.e("POS_X:", this.positionX.toString())
         val gameSaveModel = GameSaveModel(this, slot)
 
-        gameSaveModel.save(SaveEntity(this.offsetX, this.offsetZ, this.positionX, this.positionY, this.positionZ, this.points, this.hearts, this.map))
+        gameSaveModel.save(SaveEntity(this.columns, this.rows, this.positionX, this.positionY, this.positionZ, this.points, this.hearts, this.map))
         button.text = this.resources.getString(R.string.game_saved)
         shortToast("Game saved")
     }

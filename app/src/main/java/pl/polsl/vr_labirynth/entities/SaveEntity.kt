@@ -1,8 +1,8 @@
 package pl.polsl.vr_labirynth.entities
 
 class SaveEntity(
-    val offsetX: Double = 0.0,
-    val offsetZ: Double = 0.0,
+    val columns: Int = 0,
+    val rows: Int = 0,
     val positionX: Double = 0.0,
     val positionY: Double = 0.0,
     val positionZ: Double = 0.0,

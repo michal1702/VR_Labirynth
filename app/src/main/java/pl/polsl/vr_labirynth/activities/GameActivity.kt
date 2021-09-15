@@ -1,6 +1,7 @@
 package pl.polsl.vr_labirynth.activities
 
 import android.annotation.SuppressLint
+import android.webkit.ConsoleMessage
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
@@ -38,7 +39,12 @@ class GameActivity : AppCompatActivity(), IHideActionBar {
 
         val webSettings = binding.gameWebView.settings
         webSettings.javaScriptEnabled = true
-        binding.gameWebView.webChromeClient = WebChromeClient()
+        binding.gameWebView.webChromeClient = object : WebChromeClient() {
+            override fun onConsoleMessage(message: ConsoleMessage): Boolean {
+                Log.e("CONSOLE", "${message.message()}")
+                return true
+            }
+        }
         binding.gameWebView.addJavascriptInterface(this, "android")
         binding.gameWebView.loadUrl("file:///android_asset/index.html")
     }
@@ -51,11 +57,11 @@ class GameActivity : AppCompatActivity(), IHideActionBar {
             val popupIntent = Intent(this, SavePopupActivity::class.java).apply {
                 while (reader.hasNext()) {
                     when (reader.nextName()) {
-                        "offsetX" -> {
-                            putExtra("offsetX", reader.nextDouble())
+                        "columns" -> {
+                            putExtra("columns", reader.nextInt())
                         }
-                        "offsetZ" -> {
-                            putExtra("offsetZ", reader.nextDouble())
+                        "rows" -> {
+                            putExtra("rows", reader.nextInt())
                         }
                         "positionX" -> {
                             putExtra("positionX", reader.nextDouble())
@@ -103,24 +109,27 @@ class GameActivity : AppCompatActivity(), IHideActionBar {
     fun checkLoad(): Boolean {
         val extras: Bundle? = this.intent.extras
         return if (extras != null) {
-            extras.containsKey("offsetX") && extras.containsKey("offsetZ") && extras.containsKey(
+            Log.e("check", "TRUE")
+            extras.containsKey("columns") && extras.containsKey("rows") && extras.containsKey(
                     "positionX"
                 ) && extras.containsKey("positionY") && extras.containsKey("positionZ") && extras.containsKey(
                     "points"
                 ) && extras.containsKey("hearts") && extras.containsKey("map")
+
         } else {
+            Log.e("check", "FALSE")
             false;
         }
     }
 
     @JavascriptInterface
-    fun getOffsetX(): Double {
-        return this.intent.getDoubleExtra("offsetX", 0.0)
+    fun getColumns(): Int {
+        return this.intent.getIntExtra("columns", 0)
     }
 
     @JavascriptInterface
-    fun getOffsetZ(): Double {
-        return this.intent.getDoubleExtra("offsetZ", 0.0)
+    fun getRows(): Int {
+        return this.intent.getIntExtra("rows", 0)
     }
 
     @JavascriptInterface

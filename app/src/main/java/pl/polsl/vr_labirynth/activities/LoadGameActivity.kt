@@ -95,11 +95,11 @@ class LoadGameActivity() : AppCompatActivity(), IBackgroundAnimation, ITouchAnim
             reader.beginObject()
             while (reader.hasNext()) {
                 when (reader.nextName()) {
-                    "offsetX" -> {
-                        putExtra("offsetX", reader.nextDouble())
+                    "columns" -> {
+                        putExtra("columns", reader.nextInt())
                     }
-                    "offsetZ" -> {
-                        putExtra("offsetZ", reader.nextDouble())
+                    "rows" -> {
+                        putExtra("rows", reader.nextInt())
                     }
                     "positionX" -> {
                         putExtra("positionX", reader.nextDouble())

@@ -1,3 +1,5 @@
+ var gameState;
+
  if(!android.checkLoad()){
 	var ourMaze = new Maze(5, 5, 0.5, 0.09, 0.01);
     	ourMaze.init();
@@ -6,17 +8,23 @@
     	var multiArray = ourMaze.generateMap();
     	console.log(multiArray);
     	var flatArray = multiArray.flat();
-    	var gameState = new GameState(0.8, 1.6, 0.8, 0, 5, flatArray, 2 * (ourMaze.ncols - 1), 2 * (ourMaze.ncols - 1))
+    	gameState = new GameState(0.8 - (2 * ourMaze.ncols-1), 1.6, 0.8 - (2 * ourMaze.nrows-1), 0, 5, flatArray, ourMaze.ncols, ourMaze.nrows)
 }else {
 	var posX = android.getPositionX();
 	var posY = android.getPositionY();
 	var posZ = android.getPositionZ();
 	var points = android.getPoints();
 	var hearts = android.getHearts();
-	var map = android.getMap();
-	var offsetX = android.getOffsetX();
-	var offsetZ = android.getOffsetZ();
-	var gameState = new GameState(posX, posY, posZ, points, hearts, map, offsetX, offsetZ);
+	var rawMap = android.getMap();
+	var mapEls = rawMap.split('|');
+	var map = new Array();
+	for(var i=0; i<mapEls.length;i++){
+	    map.push(mapEls[i]);
+	}
+	console.log(map);
+	var columns = android.getColumns();
+	var rows = android.getRows();
+	gameState = new GameState(posX, posY, posZ, points, hearts, map, columns, rows);
 }
 
 	/*let ourMaze = new Maze(5, 5, 0.5, 0.09, 0.01);
@@ -26,9 +34,9 @@
 	var multiArray = ourMaze.generateMap();
 	console.log(multiArray);
 	var flatArray = multiArray.flat();
-	var gameState = new GameState(0.8, 1.6, 0.8, 0, 5, flatArray, 2 * (ourMaze.ncols - 1), 2 * (ourMaze.ncols - 1))*/
+	var gameState = new GameState(0.8, 1.6, 0.8, 0, 5, flatArray, 2 * (gameState.columns - 1), 2 * (gameState.columns - 1))*/
 	
-	console.log(gameState);
+	console.log(gameState.rows);
 
 AFRAME.registerComponent("mymaze", {
 	schema: {
@@ -52,10 +60,10 @@ AFRAME.registerComponent("mymaze", {
 		const floorMaterial = new THREE.MeshBasicMaterial({
 			color: 0xf2c5a6
 		});
-		const floorGeometry = new THREE.BoxGeometry(4 * ourMaze.nrows, 4 * ourMaze.ncols, 0.1);
+		const floorGeometry = new THREE.BoxGeometry(4 * gameState.rows, 4 * gameState.columns, 0.1);
 		var floor = document.createElement("a-plane");
-		floor.setAttribute("height", 4 * ourMaze.nrows);
-		floor.setAttribute("width", 4 * ourMaze.ncols);
+		floor.setAttribute("height", 4 * gameState.rows);
+		floor.setAttribute("width", 4 * gameState.columns);
 		floor.setAttribute("color", "#f2c5a6");
 		floor.setAttribute("position", {
 			x: 0,
@@ -74,16 +82,16 @@ AFRAME.registerComponent("mymaze", {
 		player.setAttribute("aabb-collider", "objects: .wall, .coin, .trap; debug: false");
 		player.setAttribute("camera");
 		player.setAttribute("position", {
-			x: 0.8 - gameState.offsetX,
+			x: gameState.positionX,
 			y: 1.6,
-			z: 0.8 - gameState.offsetZ
+			z: gameState.positionZ
 		});
-		this.data.posX = 0.8 - gameState.offsetX;
+		this.data.posX = 0.8 - (2 * (gameState.columns-1));
 		this.data.posY = 1.6;
-		this.data.posZ = 0.8 - gameState.offsetZ;
+		this.data.posZ = 0.8 - (2 * (gameState.rows-1));
 		this.el.appendChild(player);
-		for(let r = 0; r < ourMaze.nrows; r++) {
-			for(let c = 0; c < ourMaze.ncols; c++) {
+		for(let r = 0; r < gameState.rows; r++) {
+			for(let c = 0; c < gameState.columns; c++) {
 				let tmpVal = gameState.map[r*5+c];
 				console.log(r*5+c);
 				if(tmpVal >= 64) {
@@ -148,9 +156,9 @@ AFRAME.registerComponent("mymaze", {
 					coin.setAttribute("animation", "property: rotation; to: 90 360 0 dur: 2000; easing: linear; loop: true;");
 					coin.setAttribute("data-aabb-collider-dynamic");
 					coin.setAttribute("position", {
-						x: 0 + c * 4 - gameState.offsetX,
+						x: 0 + c * 4 - (2 * (gameState.columns-1)),
 						y: 0.6,
-						z: 0 + r * 4 - gameState.offsetZ
+						z: 0 + r * 4 - (2 * (gameState.rows-1))
 					});
 					this.el.appendChild(coin);
 				}
@@ -164,15 +172,15 @@ AFRAME.registerComponent("mymaze", {
 					lWall.setAttribute("depth", "0.1");
 					lWall.setAttribute("rotation", "0 -90 0");
 					lWall.setAttribute("position", {
-						x: -2 + c * 4 - gameState.offsetX,
+						x: -2 + c * 4 - (2 * (gameState.columns-1)),
 						y: 2,
-						z: 0 + r * 4 - gameState.offsetZ
+						z: 0 + r * 4 - (2 * (gameState.rows-1))
 					});
 					this.el.appendChild(lWall);
 				}
 				if(tmpVal >= 4) {
 					tmpVal -= 4;
-					if(r === ourMaze.nrows - 1) {
+					if(r === gameState.rows - 1) {
 						var bWall = document.createElement("a-box");
 						bWall.setAttribute("class", "wall");
 						bWall.setAttribute("color", "#843c24");
@@ -181,16 +189,16 @@ AFRAME.registerComponent("mymaze", {
 						bWall.setAttribute("depth", "0.1");
 						bWall.setAttribute("rotation", "0 0 0");
 						bWall.setAttribute("position", {
-							x: 0 + c * 4 - gameState.offsetX,
+							x: 0 + c * 4 - (2 * (gameState.columns-1)),
 							y: 2,
-							z: 2 + r * 4 - gameState.offsetZ
+							z: 2 + r * 4 - (2 * (gameState.rows-1))
 						});
 						this.el.appendChild(bWall);
 					}
 				}
 				if(tmpVal >= 2) {
 					tmpVal -= 2;
-					if(c === ourMaze.ncols - 1) {
+					if(c === gameState.columns - 1) {
 						var rWall = document.createElement("a-box");
 						rWall.setAttribute("class", "wall");
 						rWall.setAttribute("color", "#843c24");
@@ -199,9 +207,9 @@ AFRAME.registerComponent("mymaze", {
 						rWall.setAttribute("depth", "0.1");
 						rWall.setAttribute("rotation", "0 90 0");
 						rWall.setAttribute("position", {
-							x: 2 + c * 4 - gameState.offsetX,
+							x: 2 + c * 4 - (2 * (gameState.columns-1)),
 							y: 2,
-							z: 0 + r * 4 - gameState.offsetZ
+							z: 0 + r * 4 - (2 * (gameState.rows-1))
 						});
 						this.el.appendChild(rWall);
 					}
@@ -216,9 +224,9 @@ AFRAME.registerComponent("mymaze", {
 					tWall.setAttribute("depth", "0.1");
 					tWall.setAttribute("rotation", "0 0 0");
 					tWall.setAttribute("position", {
-						x: 0 + c * 4 - gameState.offsetX,
+						x: 0 + c * 4 - (2 * (gameState.columns-1)),
 						y: 2,
-						z: -2 + r * 4 - gameState.offsetZ
+						z: -2 + r * 4 - (2 * (gameState.rows-1))
 					});
 					this.el.appendChild(tWall);
 				}

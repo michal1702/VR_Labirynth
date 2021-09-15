@@ -48,8 +48,8 @@ class GameSaveModel(context: Context, slotName: SaveSlots? = null) {
         for(item in map){
             array.put(item)
         }
-        jObject.put("offsetX", saveEntity.offsetX)
-        jObject.put("offsetZ", saveEntity.offsetZ)
+        jObject.put("columns", saveEntity.columns)
+        jObject.put("rows", saveEntity.rows)
         jObject.put("positionX", saveEntity.positionX)
         jObject.put("positionY", saveEntity.positionY)
         jObject.put("positionZ", saveEntity.positionZ)

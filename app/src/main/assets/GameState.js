@@ -1,7 +1,7 @@
 class GameState {
-	constructor(positionX, positionY, positionZ, points, hearts, map, offsetX, offsetZ) {
-		this.offsetX = offsetX;
-		this.offsetZ = offsetZ;
+	constructor(positionX, positionY, positionZ, points, hearts, map, columns, rows) {
+		this.columns = columns;
+		this.rows = rows;
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.positionZ = positionZ;
