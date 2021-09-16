@@ -76,20 +76,20 @@ AFRAME.registerComponent("mymaze", {
 			z: 0
 		});
 		this.el.appendChild(floor);
-		var player = document.createElement("a-camera");
-		player.setAttribute("geometry", "primitive: box; width: 0.25; height: 2; depth: 0.25");
-		player.setAttribute("id", "player");
-		player.setAttribute("aabb-collider", "objects: .wall, .coin, .trap; debug: false");
-		player.setAttribute("camera");
-		player.setAttribute("position", {
+		//var player = document.createElement("a-camera");
+		//player.setAttribute("geometry", "primitive: box; width: 0.25; height: 2; depth: 0.25");
+		//player.setAttribute("id", "player");
+		//player.setAttribute("aabb-collider", "objects: .wall, .coin, .trap; debug: false");
+		//player.setAttribute("gamepad-controls", "controller: 0; lookEnabled: true; movementEnabled: true; invertAxisY: true");
+		/*player.setAttribute("position", {
 			x: gameState.positionX,
 			y: 1.6,
 			z: gameState.positionZ
-		});
+		});*/
 		this.data.posX = 0.8 - (2 * (gameState.columns-1));
 		this.data.posY = 1.6;
 		this.data.posZ = 0.8 - (2 * (gameState.rows-1));
-		this.el.appendChild(player);
+		//this.el.appendChild(player);
 		for(let r = 0; r < gameState.rows; r++) {
 			for(let c = 0; c < gameState.columns; c++) {
 				let tmpVal = gameState.map[r*5+c];
@@ -233,7 +233,7 @@ AFRAME.registerComponent("mymaze", {
 			}
 		}
 	},
-	tick: function() {
+	/*tick: function() {
 		var player = document.querySelector("#player");
 		var intersectedList = player.components['aabb-collider']['intersectedEls'];
 		
@@ -276,7 +276,7 @@ AFRAME.registerComponent("mymaze", {
 			}
 		};
 		gameState.updatePosition(player.getAttribute("position").x, player.getAttribute("position").y, player.getAttribute("position").z);
-	}
+	}*/
 })
 
 function saveGameState() {
