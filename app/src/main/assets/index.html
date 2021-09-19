@@ -17,12 +17,15 @@
 <body>
 	<a-scene mymaze inspector stats >
 		<a-sky color="#ececec"></a-sky>
-		<a-entity id="rig"
+		<a-entity   id="rig"
 				  movement-controls
-				  position="25 0 25">
-			<a-entity camera
+				  position="-8 0 -8">
+			<a-entity id="player" camera
 					  position="0 1.6 0"
-					  look-controls="pointerLockEnabled: true" "objects: .coin; debug: false"></a-entity>
+					  look-controls="pointerLockEnabled: true" 
+					  geometry= "primitive: box; width: 0.25; height: 2; depth: 0.25"
+					  aabb-collider="objects: .coin; debug: false"
+					  ></a-entity>
 		</a-entity>
 	</a-scene>
 </body>
