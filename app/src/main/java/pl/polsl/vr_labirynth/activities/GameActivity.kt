@@ -1,13 +1,13 @@
 package pl.polsl.vr_labirynth.activities
 
 import android.annotation.SuppressLint
-import android.webkit.ConsoleMessage
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.JsonReader
 import android.util.Log
 import android.view.Window
+import android.webkit.ConsoleMessage
 import android.webkit.JavascriptInterface
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
@@ -93,8 +93,7 @@ class GameActivity : AppCompatActivity(), IHideActionBar {
         })
 
     }
-	
-	
+
 
     private fun readIntArray(reader: JsonReader): ArrayList<Int> {
         val values: ArrayList<Int> = ArrayList<Int>()
@@ -106,27 +105,26 @@ class GameActivity : AppCompatActivity(), IHideActionBar {
         reader.endArray()
         return values
     }
-	@JavascriptInterface
-	fun gameOver(points: Int) {
-       
-            val scoreIntent = Intent(this, ScorePopupActivity::class.java).apply {
-               
-                            putExtra("score", points)
-                     
-            startActivityForResult(popupIntent, 1)
-        })
 
+    @JavascriptInterface
+    fun gameOver(points: Int) {
+        val scoreIntent = Intent(this, ScorePopupActivity::class.java).apply {
+            putExtra("score", points)
+        }
+        startActivity(scoreIntent)
+        finish()
     }
+
     @JavascriptInterface
     fun checkLoad(): Boolean {
         val extras: Bundle? = this.intent.extras
         return if (extras != null) {
             Log.e("check", "TRUE")
             extras.containsKey("columns") && extras.containsKey("rows") && extras.containsKey(
-                    "positionX"
-                ) && extras.containsKey("positionY") && extras.containsKey("positionZ") && extras.containsKey(
-                    "points"
-                ) && extras.containsKey("hearts") && extras.containsKey("map")
+                "positionX"
+            ) && extras.containsKey("positionY") && extras.containsKey("positionZ") && extras.containsKey(
+                "points"
+            ) && extras.containsKey("hearts") && extras.containsKey("map")
 
         } else {
             Log.e("check", "FALSE")
@@ -174,10 +172,10 @@ class GameActivity : AppCompatActivity(), IHideActionBar {
         val map = intent.getIntegerArrayListExtra("map")
         val positions = map?.toIntArray() ?: intArrayOf(0)
         var mapAsString = ""
-        for(item in positions){
+        for (item in positions) {
             mapAsString += "$item|"
         }
-        return mapAsString.take(mapAsString.length-1)
+        return mapAsString.take(mapAsString.length - 1)
     }
 
 
