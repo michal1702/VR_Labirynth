@@ -93,6 +93,8 @@ class GameActivity : AppCompatActivity(), IHideActionBar {
         })
 
     }
+	
+	
 
     private fun readIntArray(reader: JsonReader): ArrayList<Int> {
         val values: ArrayList<Int> = ArrayList<Int>()
@@ -104,7 +106,17 @@ class GameActivity : AppCompatActivity(), IHideActionBar {
         reader.endArray()
         return values
     }
+	@JavascriptInterface
+	fun gameOver(points: Int) {
+       
+            val scoreIntent = Intent(this, ScorePopupActivity::class.java).apply {
+               
+                            putExtra("score", points)
+                     
+            startActivityForResult(popupIntent, 1)
+        })
 
+    }
     @JavascriptInterface
     fun checkLoad(): Boolean {
         val extras: Bundle? = this.intent.extras

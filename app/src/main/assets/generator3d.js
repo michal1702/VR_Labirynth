@@ -8,7 +8,7 @@
     	var multiArray = ourMaze.generateMap();
     	console.log(multiArray);
     	var flatArray = multiArray.flat();
-    	gameState = new GameState(0.8 - (2 * ourMaze.ncols-1), 1.6, 0.8 - (2 * ourMaze.nrows-1), 0, 5, flatArray, ourMaze.ncols, ourMaze.nrows)
+    	gameState = new GameState(0.8 - (2 * ourMaze.ncols-1), 1.6, 0.8 - (2 * ourMaze.nrows-1), 0, 3, flatArray, ourMaze.ncols, ourMaze.nrows)
 }else {
 	var posX = android.getPositionX();
 	var posY = android.getPositionY();
@@ -233,7 +233,7 @@ AFRAME.registerComponent("mymaze", {
 			}
 		}
 	},
-	/*tick: function() {
+	tick: function() {
 		var player = document.querySelector("#player");
 		var intersectedList = player.components['aabb-collider']['intersectedEls'];
 		
@@ -269,14 +269,20 @@ AFRAME.registerComponent("mymaze", {
 					intersectedList.splice(i);
 					gameState.updatePoints();
 					console.log(gameState.points);
+					gameState.updateHearts();
 				} else {
 					gameState.updateHearts();
 					console.log(gameState.hearts);
 				}
 			}
 		};
+		
+		if(gameState.hearts == 0){
+			android.gameOver(gameState.points);
+		}
+		
 		gameState.updatePosition(player.getAttribute("position").x, player.getAttribute("position").y, player.getAttribute("position").z);
-	}*/
+	}
 })
 
 function saveGameState() {
