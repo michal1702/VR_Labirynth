@@ -6,7 +6,6 @@
     	ourMaze.addEntranceExit();
     	ourMaze.draw();
     	var multiArray = ourMaze.generateMap();
-    	console.log(multiArray);
     	var flatArray = multiArray.flat();
     	gameState = new GameState(0.8 - (2 * ourMaze.ncols-1), 1.6, 0.8 - (2 * ourMaze.nrows-1), 0, 3, flatArray, ourMaze.ncols, ourMaze.nrows)
 /*}else {
@@ -36,7 +35,7 @@
 	var flatArray = multiArray.flat();
 	var gameState = new GameState(0.8, 1.6, 0.8, 0, 5, flatArray, 2 * (gameState.columns - 1), 2 * (gameState.columns - 1))*/
 	
-	console.log(gameState.rows);
+
 
 AFRAME.registerComponent("mymaze", {
 	schema: {
@@ -53,23 +52,13 @@ AFRAME.registerComponent("mymaze", {
 	// TODO: add textures
 	init: function() {
 		var scene = this.el.sceneEl.object3D;
-		const sideGeometry = new THREE.BoxGeometry(4, 4, 0.1);
-		const wallMaterial = new THREE.MeshBasicMaterial({
-			color: 0x843c24
-		});
-		const floorMaterial = new THREE.MeshBasicMaterial({
-			color: 0xf2c5a6
-		});
-		const floorGeometry = new THREE.BoxGeometry(4 * gameState.rows, 4 * gameState.columns, 0.1);
+	
 		var floor = document.createElement("a-plane");
 		floor.setAttribute("height", 4 * gameState.rows);
 		floor.setAttribute("width", 4 * gameState.columns);
 		floor.setAttribute("color", "#f2c5a6");
-		floor.setAttribute("position", {
-			x: 0,
-			y: 0,
-			z: 0
-		});
+		floor.object3D.position.set(0, 0, 0);
+		
 		floor.setAttribute("rotation", {
 			x: -90,
 			y: 0,
@@ -92,8 +81,8 @@ AFRAME.registerComponent("mymaze", {
 		//this.el.appendChild(player);
 		for(let r = 0; r < gameState.rows; r++) {
 			for(let c = 0; c < gameState.columns; c++) {
-				let tmpVal = gameState.map[r*5+c];
-				console.log(r*5+c);
+				var index = r*gameState.columns+c;
+				let tmpVal = gameState.map[index];
 				if(tmpVal >= 64) {
 					tmpVal -= 64;
 					/*	for (var row = 0; row <= 9; row += 1) {
@@ -146,89 +135,53 @@ AFRAME.registerComponent("mymaze", {
 				}
 				if(tmpVal >= 16) {
 					tmpVal -= 16;
-					var coin = document.createElement("a-cylinder");
-					coin.setAttribute("id", "coin"+"_"+r+"_"+c)
+					var coin = this.el.sceneEl.components.pool__coins.requestEntity();
+					coin.setAttribute("id", "coin"+"_"+index)
 					coin.setAttribute("class", "coin");
-					coin.setAttribute("height", "0.1");
-					coin.setAttribute("radius", "0.5");
-					coin.setAttribute("color", "#FFFF00");
-					coin.setAttribute("rotation", "90 0 0");
 					coin.setAttribute("animation", "property: rotation; to: 90 360 0 dur: 2000; easing: linear; loop: true;");
-					coin.setAttribute("data-aabb-collider-dynamic");
-					coin.setAttribute("position", {
-						x: 0 + c * 4 - (2 * (gameState.columns-1)),
-						y: 0.6,
-						z: 0 + r * 4 - (2 * (gameState.rows-1))
-					});
-					this.el.appendChild(coin);
+					coin.play();
+					coin.object3D.position.set(0 + c * 4 - (2 * (gameState.columns-1)),
+						0.6,
+						0 + r * 4 - (2 * (gameState.rows-1)));
 				}
 				if(tmpVal >= 8) {
 					tmpVal -= 8;
-					var lWall = document.createElement("a-box");
+					var lWall = this.el.sceneEl.components.pool__lwalls.requestEntity();
 					lWall.setAttribute("class", "wall");
-					lWall.setAttribute("color", "#843c24");
-					lWall.setAttribute("width", "4");
-					lWall.setAttribute("height", "4");
-					lWall.setAttribute("depth", "0.1");
-					lWall.setAttribute("rotation", "0 -90 0");
+					lWall.object3D.position.set(-2 + c * 4 - (2 * (gameState.columns-1)), 2, 0 + r * 4 - (2 * (gameState.rows-1)));
 					lWall.setAttribute("position", {
 						x: -2 + c * 4 - (2 * (gameState.columns-1)),
 						y: 2,
 						z: 0 + r * 4 - (2 * (gameState.rows-1))
 					});
-					this.el.appendChild(lWall);
 				}
 				if(tmpVal >= 4) {
 					tmpVal -= 4;
 					if(r === gameState.rows - 1) {
-						var bWall = document.createElement("a-box");
+						var bWall = this.el.sceneEl.components.pool__hwalls.requestEntity();
 						bWall.setAttribute("class", "wall");
-						bWall.setAttribute("color", "#843c24");
-						bWall.setAttribute("width", "4");
-						bWall.setAttribute("height", "4");
-						bWall.setAttribute("depth", "0.1");
-						bWall.setAttribute("rotation", "0 0 0");
-						bWall.setAttribute("position", {
-							x: 0 + c * 4 - (2 * (gameState.columns-1)),
-							y: 2,
-							z: 2 + r * 4 - (2 * (gameState.rows-1))
-						});
-						this.el.appendChild(bWall);
+						bWall.object3D.position.set(0 + c * 4 - (2 * (gameState.columns-1)),
+							2,
+							2 + r * 4 - (2 * (gameState.rows-1)));
 					}
 				}
 				if(tmpVal >= 2) {
 					tmpVal -= 2;
 					if(c === gameState.columns - 1) {
-						var rWall = document.createElement("a-box");
+						var rWall = this.el.sceneEl.components.pool__rwalls.requestEntity();
 						rWall.setAttribute("class", "wall");
-						rWall.setAttribute("color", "#843c24");
-						rWall.setAttribute("width", "4");
-						rWall.setAttribute("height", "4");
-						rWall.setAttribute("depth", "0.1");
-						rWall.setAttribute("rotation", "0 90 0");
-						rWall.setAttribute("position", {
-							x: 2 + c * 4 - (2 * (gameState.columns-1)),
-							y: 2,
-							z: 0 + r * 4 - (2 * (gameState.rows-1))
-						});
-						this.el.appendChild(rWall);
+						rWall.object3D.position.set(2 + c * 4 - (2 * (gameState.columns-1)),
+							2,
+							0 + r * 4 - (2 * (gameState.rows-1)));
 					}
 				}
 				if(tmpVal >= 1) {
 					tmpVal -= 1;
-					var tWall = document.createElement("a-box");
+					var tWall = this.el.sceneEl.components.pool__hwalls.requestEntity();
 					tWall.setAttribute("class", "wall");
-					tWall.setAttribute("color", "#843c24");
-					tWall.setAttribute("width", "4");
-					tWall.setAttribute("height", "4");
-					tWall.setAttribute("depth", "0.1");
-					tWall.setAttribute("rotation", "0 0 0");
-					tWall.setAttribute("position", {
-						x: 0 + c * 4 - (2 * (gameState.columns-1)),
-						y: 2,
-						z: -2 + r * 4 - (2 * (gameState.rows-1))
-					});
-					this.el.appendChild(tWall);
+					tWall.object3D.position.set(0 + c * 4 - (2 * (gameState.columns-1)),
+						2,
+						-2 + r * 4 - (2 * (gameState.rows-1)));
 				}
 			}
 		}
@@ -238,56 +191,46 @@ AFRAME.registerComponent("mymaze", {
 		var intersectedList = player.components['aabb-collider']['intersectedEls'];
 		
 		if(intersectedList.length === 0) {
-			this.el.setAttribute("posX", player.getAttribute("position").x);
-			this.el.setAttribute("posY", player.getAttribute("position").y);
-			this.el.setAttribute("posZ", player.getAttribute("position").z);
-			this.data.posX = player.getAttribute("position").x;
-			this.data.posY = player.getAttribute("position").y;
-			this.data.posZ = player.getAttribute("position").z;
+			
+			this.lastPosition = {
+					x: player.object3D.position.x,
+					y: player.object3D.position.y,
+					z: player.object3D.position.z
+				}
+				
 		} else {
 			for(var i = 0; i < intersectedList.length; i++) {
 				var intersectedType = intersectedList[i].getAttribute("class");
 				if(intersectedType == "wall") {
-					player.setAttribute("position", {
-						x: this.data.posX,
-						y: this.data.posY,
-						z: this.data.posZ
-					});
+					player.object3D.position.set(this.lastPosition.x, this.lastPosition.y, this.lastPosition.z);
 				} else if(intersectedType == "coin") {
 					var el = intersectedList[i];
 					var id = el.getAttribute("id");
 					const idParts = id.split('_');
-					var row = idParts[1];
-					var column = idParts[2];
-					gameState.updateCoins(row, column);
-					console.log(row);
-					console.log(column)
-					console.log(gameState.map);
-					console.log(el);
-					el.parentNode.removeChild(el);
-					console.log("success");
+					var index = idParts[1];
+					gameState.updateCoins(index);
+					this.el.sceneEl.components.pool__coins.returnEntity(el);
+				//	el.parentNode.removeChild(el);
 					intersectedList.splice(i);
 					gameState.updatePoints();
-					console.log(gameState.points);
 					gameState.updateHearts();
 				} else {
 					gameState.updateHearts();
-					console.log(gameState.hearts);
 				}
 			}
 		};
 		
-		if(gameState.hearts == 0){
+		/*if(gameState.hearts == 0){
 			this.pause()
 		//	android.gameOver(gameState.points);
-		}
+		}*/
 		
 		gameState.updatePosition(player.getAttribute("position").x, player.getAttribute("position").y, player.getAttribute("position").z);
 	},
 	
-	pause: function() {
-		android.gameOver(gameState.points);
-	}
+/*	pause: function() {
+	//	android.gameOver(gameState.points);
+	} */
 })
 
 function saveGameState() {
