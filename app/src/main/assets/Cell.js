@@ -21,14 +21,7 @@ class Cell {
 			} else {
 				this.special = specials.NONE;
 			}
-		} else {
-			/* if(rand < axeDensity) {
-				this.special = specials.AXES;
-			} else {
-				this.special = specials.SPIKES;
-			} */
-			
-		}
+		} 
 	}
 	checkNeighbours() {
 		let grid = this.mazeGrid;

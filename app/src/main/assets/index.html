@@ -1,56 +1,27 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-	<meta charset="UTF-8" />
-	<script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
-	<script
-		src="https://unpkg.com/aframe-aabb-collider-component@3.1.0/dist/aframe-aabb-collider-component.min.js"></script>
-  
-	<script src="specials.js"></script>
-	<script src="Cell.js"></script>
-	<script src="Maze.js"></script>
-	<script src="GameState.js"></script>
-	<script src="generator3d.js"></script>
-</head>
-
-<body>
-	<a-scene inspector  pool__hwalls="mixin: horizontal wall; dynamic: true; size: 40" pool__rwalls="mixin: right wall; dynamic: true; size: 40" pool__lwalls="mixin: left wall; dynamic: true; size: 40" pool__coins="mixin: coin; dynamic: true; size: 40"  pool__entrance="mixin: horizontal exit; dynamic: true; size: 1"  pool__exitl="mixin: left exit; dynamic: true; size: 1"  pool__exitr="mixin: right exit; dynamic: true; size: 1"  mymaze >
-		<a-sky color="#ececec"></a-sky>
-	<!--	<a-entity   id="player"
-				  movement-controls
-				  position="-8 1.6 -8"
-				  aabb-collider="objects: .coin, .wall, .trap, .exit; debug: false"
-				  geometry= "primitive: box; width: 1; height: 1.5; depth: 1"
-				  material="opacity: 1"
-				  visible="true"
-				   >
-			<a-entity  camera
-					  position="0 0 0"
-					  
-					  
-					  look-controls="pointerLockEnabled: true" >
-					
-					  <a-text value="Coins: " position="-1.15 0.75 -1" color="black" scale="0.5 0.5 0.5"></a-text> <a-text id="coinVal" value="0" position="-0.8 0.75 -1" color="black" scale="0.5 0.5 0.5"></a-text>
-					  <a-text value="Lives: " position="-1.15 0.55 -1"  color="black" scale="0.5 0.5 0.5"></a-text> <a-text id="heartVal" value="3" position="-0.8 0.55 -1" color="black" scale="0.5 0.5 0.5"></a-text>
-					  </a-entity>
-		</a-entity>-->
-		<a-assets>
-		<a-mixin id="wall" geometry="primitive: box; height: 4; width: 4; depth: 0.1;" material="color: #843c24"></a-mixin>
-			<a-mixin id="exit" geometry="primitive: box; height: 4; width: 4; depth: 0.1;" material="color: #ececec"></a-mixin>
-	
-				<a-mixin id="left" rotation="0 -90 0"></a-mixin>
-						<a-mixin id="right" rotation="0 90 0" ></a-mixin>
-								<a-mixin id="horizontal" rotation="0 0 0" ></a-mixin>
-								<a-mixin id="coin" geometry="primitive: cylinder; height: 0.1; radius: 0.5;" material="color: #FFFF00" rotation="90 0 0" ></a-mixin>
-	</a-assets>
-	
-	
-  
-
-
-	</a-scene>
-</body>
-
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-aabb-collider-component@3.1.0/dist/aframe-aabb-collider-component.min.js"></script>
+    <script src="specials.js"></script>
+    <script src="Cell.js"></script>
+    <script src="Maze.js"></script>
+    <script src="GameState.js"></script>
+    <script src="generator3d.js"></script>
+  </head>
+  <body>
+    <a-scene inspector pool__hwalls="mixin: horizontal wall; dynamic: true; size: 40" pool__rwalls="mixin: right wall; dynamic: true; size: 40" pool__lwalls="mixin: left wall; dynamic: true; size: 40" pool__coins="mixin: coin; dynamic: true; size: 40" pool__entrance="mixin: horizontal exit; dynamic: true; size: 1" pool__exitl="mixin: left exit; dynamic: false; size: 1" pool__exitr="mixin: right exit; dynamic: false; size: 1" mymaze>
+      <a-sky color="#ececec"></a-sky>
+      <a-assets>
+        <a-mixin id="wall" geometry="primitive: box; height: 4; width: 4; depth: 0.1;" material="color: #843c24"></a-mixin>
+        <a-mixin id="exit" geometry="primitive: box; height: 4; width: 4; depth: 0.1;" material="color: #ececec"></a-mixin>
+        <a-mixin id="left" rotation="0 -90 0"></a-mixin>
+        <a-mixin id="right" rotation="0 90 0"></a-mixin>
+        <a-mixin id="horizontal" rotation="0 0 0"></a-mixin>
+        <a-mixin id="coin" geometry="primitive: cylinder; height: 0.1; radius: 0.5;" material="color: #FFFF00" rotation="90 0 0"></a-mixin>
+      </a-assets>
+    </a-scene>
+  </body>
 </html>
