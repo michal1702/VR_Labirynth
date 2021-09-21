@@ -1,6 +1,6 @@
  var gameState;
 
- if(!android.checkLoad()){
+// if(!android.checkLoad()){
 	var ourMaze = new Maze(5, 5, 0.5, 0.09, 0.01);
     	ourMaze.init();
     	ourMaze.addEntranceExit();
@@ -47,6 +47,18 @@ AFRAME.registerComponent("mymaze", {
 		},
 		posZ: {
 			default: gameState.positionZ
+		},
+		initX: {
+			default: gameState.positionX
+		},
+		initY: {
+			default: gameState.positionY
+		},
+		initZ: {
+			default: gameState.positionZ
+		}, 
+		interval: {
+			default: 0
 		}
 	},
 	// TODO: add textures
@@ -79,6 +91,7 @@ AFRAME.registerComponent("mymaze", {
 		this.data.posX = 0.8 - (2 * (gameState.columns-1));
 		this.data.posY = 1.6;
 		this.data.posZ = 0.8 - (2 * (gameState.rows-1));
+	
 		//this.el.appendChild(player);
 		for(let r = 0; r < gameState.rows; r++) {
 			for(let c = 0; c < gameState.columns; c++) {
@@ -339,10 +352,14 @@ AFRAME.registerComponent("mymaze", {
 					android.gameOver(gameState.points);
 				} 
 				else {
-					console.log("heart");
+				//	console.log("heart");
+				if(this.data.interval == 0){
+					player.object3D.position.set(this.data.initX, this.data.initY, this.data.initZ);
 					gameState.updateHearts();
+					this.data.interval+=1000;
 					var hearts = document.querySelector("#heartVal");
 					hearts.setAttribute("value", gameState.hearts);
+				}
 				}
 			}
 		};
@@ -350,6 +367,10 @@ AFRAME.registerComponent("mymaze", {
 		if(gameState.hearts <= 0){
 		//	this.pause()
 		//	android.gameOver(gameState.points);
+		}
+		
+		if(this.data.interval > 0){
+			this.data.interval--;
 		}
 		
 		gameState.updatePosition(player.getAttribute("position").x, player.getAttribute("position").y, player.getAttribute("position").z);
