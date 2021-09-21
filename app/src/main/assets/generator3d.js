@@ -78,21 +78,59 @@ AFRAME.registerComponent("mymaze", {
 		});
 		this.el.appendChild(floor);
 		
-		//var player = document.createElement("a-camera");
-		//player.setAttribute("geometry", "primitive: box; width: 0.25; height: 2; depth: 0.25");
-		//player.setAttribute("id", "player");
-		//player.setAttribute("aabb-collider", "objects: .wall, .coin, .trap; debug: false");
-		//player.setAttribute("gamepad-controls", "controller: 0; lookEnabled: true; movementEnabled: true; invertAxisY: true");
-		/*player.setAttribute("position", {
-			x: gameState.positionX,
-			y: 1.6,
-			z: gameState.positionZ
-		});*/
+	
+		
+		
+		var player = document.createElement("a-entity");
+		player.setAttribute("geometry", "primitive: box; width: 1; height: 1.5; depth: 1");
+		player.setAttribute("id", "player");
+		player.setAttribute("aabb-collider", "objects: .wall, .coin, .trap, .exit; debug: false");
+		player.setAttribute('movement-controls', '');
+		player.setAttribute('material', 'opacity: 1');
+		player.setAttribute('visible', 'true');
+		player.object3D.position.set(gameState.positionX, 1.6, gameState.positionZ);
 		this.data.posX = 0.8 - (2 * (gameState.columns-1));
 		this.data.posY = 1.6;
 		this.data.posZ = 0.8 - (2 * (gameState.rows-1));
-	
-		//this.el.appendChild(player);
+		
+		var cam = document.createElement("a-entity");
+		cam.setAttribute('camera', '');
+		cam.setAttribute('look-controls', 'pointerLockEnabled: true');
+		cam.object3D.position.set(0, 0, 0);
+		
+		var coinLabel = document.createElement("a-text");
+		coinLabel.setAttribute("value", "Coins: ");
+		coinLabel.setAttribute("position", "-1.15 0.75 -1");
+		coinLabel.setAttribute("color", "black");
+		coinLabel.setAttribute("scale", "0.5 0.5 0.5");
+		
+		var coinValue = document.createElement("a-text");
+		coinValue.setAttribute("value", "0");
+		coinValue.setAttribute("position", "-0.8 0.75 -1");
+		coinValue.setAttribute("color", "black");
+		coinValue.setAttribute("scale", "0.5 0.5 0.5");
+		
+			var heartsLabel = document.createElement("a-text");
+		heartsLabel.setAttribute("value", "Lives: ");
+		heartsLabel.setAttribute("position", "-1.15 0.55 -1");
+		heartsLabel.setAttribute("color", "black");
+		heartsLabel.setAttribute("scale", "0.5 0.5 0.5");
+		
+			var heartsValue = document.createElement("a-text");
+		heartsValue.setAttribute("value", "3");
+		heartsValue.setAttribute("position", "-0.8 0.55 -1");
+		heartsValue.setAttribute("color", "black");
+		heartsValue.setAttribute("scale", "0.5 0.5 0.5");
+		
+		cam.appendChild(heartsValue);
+		cam.appendChild(heartsLabel);
+		cam.appendChild(coinLabel);
+		cam.appendChild(coinValue);
+		player.appendChild(cam);
+		this.el.appendChild(player);
+		
+		console.log(player);
+		
 		for(let r = 0; r < gameState.rows; r++) {
 			for(let c = 0; c < gameState.columns; c++) {
 				var hasTrap = false;
