@@ -1,6 +1,6 @@
  var gameState;
 
- if(!android.checkLoad()){
+ 
  var ourMaze = new Maze(5, 5, 0.5, 0.09, 0.01);
  ourMaze.init();
  ourMaze.addEntranceExit();
@@ -8,22 +8,7 @@
  var multiArray = ourMaze.generateMap();
  var flatArray = multiArray.flat();
  gameState = new GameState(0.8 - (2 * ourMaze.ncols - 1), 1.6, 0.8 - (2 * ourMaze.nrows - 1), 0, 3, flatArray, ourMaze.ncols, ourMaze.nrows)
- }else {
-	var posX = android.getPositionX();
-	var posY = android.getPositionY();
-	var posZ = android.getPositionZ();
-	var points = android.getPoints();
-	var hearts = android.getHearts();
-	var rawMap = android.getMap();
-	var mapEls = rawMap.split('|');
-	var map = new Array();
-	for(var i=0; i<mapEls.length;i++){
-	    map.push(mapEls[i]);
-	}
-	var columns = android.getColumns();
-	var rows = android.getRows();
-	gameState = new GameState(posX, posY, posZ, points, hearts, map, columns, rows);
-} 
+ 
 
  AFRAME.registerComponent("mymaze", {
  	schema: {
@@ -148,7 +133,7 @@
  					tmpVal -= 256;
  					var lWall = this.el.sceneEl.components.pool__exitl.requestEntity();
  					lWall.setAttribute("class", "exit");
- 					lWall.setAttribute("color", "#ececec");
+ 				//	lWall.setAttribute("color", "#ececec");
 
  					lWall.object3D.position.set(-2 + c * 4 - (2 * (gameState.columns - 1)), 2, 0 + r * 4 - (2 * (gameState.rows - 1)));
  				}
@@ -315,9 +300,11 @@
  					var coins = document.querySelector("#coinVal");
  					coins.setAttribute("value", gameState.points);
  				} else if (intersectedType == "exit") {
- 					gameState.points += gameState.heart * 20;
+ 					gameState.points += gameState.hearts * 20;
+					var coins = document.querySelector("#coinVal");
+				coins.setAttribute('value', `You won! ${gameState.points}`);
  					this.pause()
- 					android.gameOver(gameState.points);
+ 					
  				} else {
  					if (this.data.interval == 0) {
  						player.object3D.position.set(this.data.initX, this.data.initY, this.data.initZ);
@@ -331,8 +318,9 @@
  		};
 
  		if (gameState.hearts <= 0) {
- 			this.pause()
- 			android.gameOver(gameState.points);
+			var hearts = document.querySelector("#heartVal");
+ 			hearts.setAttribute("value", "0 - You lost!");
+			this.pause()
  		}
 
  		if (this.data.interval > 0) {
@@ -343,10 +331,7 @@
  	},
 
  	pause: function() {
- 		android.gameOver(gameState.points);
+ 		
  	}
  })
 
- function saveGameState() {
- 	return gameState;
- }
