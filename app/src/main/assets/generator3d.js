@@ -1,7 +1,7 @@
  var gameState;
 
  //if(!android.checkLoad()){
-	var ourMaze = new Maze(5, 5, 0.5, 0.09, 0.01);
+	var ourMaze = new Maze(5, 5, 0.5, 0.2, 0.2);
     	ourMaze.init();
     	ourMaze.addEntranceExit();
     	ourMaze.draw();
@@ -65,6 +65,7 @@ AFRAME.registerComponent("mymaze", {
 			z: 0
 		});
 		this.el.appendChild(floor);
+		
 		//var player = document.createElement("a-camera");
 		//player.setAttribute("geometry", "primitive: box; width: 0.25; height: 2; depth: 0.25");
 		//player.setAttribute("id", "player");
@@ -81,10 +82,14 @@ AFRAME.registerComponent("mymaze", {
 		//this.el.appendChild(player);
 		for(let r = 0; r < gameState.rows; r++) {
 			for(let c = 0; c < gameState.columns; c++) {
+				var hasTrap = false;
+				var hasOtherTrap = false;
 				var index = r*gameState.columns+c;
 				let tmpVal = gameState.map[index];
 				if(tmpVal >= 64) {
 					tmpVal -= 64;
+				//	hasTrap = true;
+				//	console.log("trap");
 					/*	for (var row = 0; row <= 9; row += 1) {
 							for (var col = 0; col <= 9; col += 1) {
 								var stake = document.createElement("a-cone");
@@ -100,9 +105,42 @@ AFRAME.registerComponent("mymaze", {
 								this.el.appendChild(stake);
 							}
 						} */
+						
+						
+						const wallX = -2 + c * 4 - (2 * (gameState.columns-1));
+		
+					
+					
+						var lTrap = document.createElement("a-box");
+						lTrap.setAttribute("class", "trap");
+						lTrap.setAttribute("height", "4");
+						lTrap.setAttribute("width", "2");
+						lTrap.setAttribute("depth", "0.1");
+						lTrap.setAttribute("rotation", "0 0 0");
+						lTrap.setAttribute("animation", "property: width; to: 0; dur: 2000; easing: linear; loop: true; dir: alternate");
+						lTrap.setAttribute('animation__1', `property: object3D.position.x; to: ${wallX}; dur: 2000; easing: linear; loop: true; dir: alternate`);
+						lTrap.object3D.position.set(-1 + c * 4 - (2 * (gameState.columns-1)), 2, 0 + r * 4 - (2 * (gameState.rows-1)));
+						
+						const wallXD = 2 + c * 4 - (2 * (gameState.columns-1));
+						
+						var rTrap = document.createElement("a-box");
+						rTrap.setAttribute("class", "trap");
+						rTrap.setAttribute("height", "4");
+						rTrap.setAttribute("width", "2");
+						rTrap.setAttribute("depth", "0.1");
+						rTrap.setAttribute("rotation", "0 0 0");
+						rTrap.setAttribute("animation", "property: width; to: 0; dur: 2000; easing: linear; loop: true; dir: alternate");
+						rTrap.setAttribute('animation__1', `property: object3D.position.x; to: ${wallXD}; dur: 2000; easing: linear; loop: true; dir: alternate`);
+						rTrap.object3D.position.set(1 + c * 4 - (2 * (gameState.columns-1)), 2, 0 + r * 4 - (2 * (gameState.rows-1)));
+						
+						this.el.appendChild(lTrap);
+						this.el.appendChild(rTrap);
+					
 				}
 				if(tmpVal >= 32) {
 					tmpVal -= 32;
+				//	hasOtherTrap = true;
+				//	console.log("other-trap");
 					/*	var trunk = document.createElement("a-cylinder");
 						trunk.setAttribute("height", "4");
 						trunk.setAttribute("radius", "0.3");
@@ -132,6 +170,43 @@ AFRAME.registerComponent("mymaze", {
 							trunk.appendChild(branch);
 						}
 						this.el.appendChild(trunk); */
+						
+						
+					
+						const wallZ = 2 + r * 4 - (2 * (gameState.rows-1));
+							const wallZD = -2 + r * 4 - (2 * (gameState.rows-1));
+					
+					
+						var bTrap = document.createElement("a-box");
+						bTrap.setAttribute("class", "trap");
+						bTrap.setAttribute("height", "4");
+						bTrap.setAttribute("width", "2");
+						bTrap.setAttribute("depth", "0.1");
+						bTrap.setAttribute("rotation", "0 -90 0");
+						bTrap.setAttribute("animation", "property: width; to: 0; dur: 2000; easing: linear; loop: true; dir: alternate");
+						bTrap.setAttribute('animation__1', `property: object3D.position.z; to: ${wallZ}; dur: 2000; easing: linear; loop: true; dir: alternate`);
+						bTrap.setAttribute('aabb-collider-dynamic','');
+						bTrap.object3D.position.set(0 + c * 4 - (2 * (gameState.columns-1)),
+							2,
+							1 + r * 4 - (2 * (gameState.rows-1)));
+						
+					
+						
+						var tTrap = document.createElement("a-box");
+						tTrap.setAttribute("class", "trap");
+						tTrap.setAttribute("height", "4");
+						tTrap.setAttribute("width", "2");
+						tTrap.setAttribute("depth", "0.1");
+						tTrap.setAttribute("rotation", "0 90 0");
+						tTrap.setAttribute("animation", "property: width; to: 0; dur: 2000; easing: linear; loop: true; dir: alternate");
+						tTrap.setAttribute('animation__1', `property: object3D.position.z; to: ${wallZD}; dur: 2000; easing: linear; loop: true; dir: alternate`);
+						tTrap.object3D.position.set(0 + c * 4 - (2 * (gameState.columns-1)),
+						2,
+						-1 + r * 4 - (2 * (gameState.rows-1)));
+						
+						this.el.appendChild(tTrap);
+						this.el.appendChild(bTrap);
+						console.log(bTrap);
 				}
 				if(tmpVal >= 16) {
 					tmpVal -= 16;
@@ -148,12 +223,10 @@ AFRAME.registerComponent("mymaze", {
 					tmpVal -= 8;
 					var lWall = this.el.sceneEl.components.pool__lwalls.requestEntity();
 					lWall.setAttribute("class", "wall");
+					
 					lWall.object3D.position.set(-2 + c * 4 - (2 * (gameState.columns-1)), 2, 0 + r * 4 - (2 * (gameState.rows-1)));
-					lWall.setAttribute("position", {
-						x: -2 + c * 4 - (2 * (gameState.columns-1)),
-						y: 2,
-						z: 0 + r * 4 - (2 * (gameState.rows-1))
-					});
+					
+				
 				}
 				if(tmpVal >= 4) {
 					tmpVal -= 4;
@@ -189,7 +262,7 @@ AFRAME.registerComponent("mymaze", {
 	tick: function() {
 		var player = document.querySelector("#player");
 		var intersectedList = player.components['aabb-collider']['intersectedEls'];
-		
+		console.log(intersectedList);
 		if(intersectedList.length === 0) {
 			
 			this.lastPosition = {
@@ -199,9 +272,11 @@ AFRAME.registerComponent("mymaze", {
 				}
 				
 		} else {
+			
 			for(var i = 0; i < intersectedList.length; i++) {
 				var intersectedType = intersectedList[i].getAttribute("class");
 				if(intersectedType == "wall") {
+					console.log("hit");
 					player.object3D.position.set(this.lastPosition.x, this.lastPosition.y, this.lastPosition.z);
 				} else if(intersectedType == "coin") {
 					var el = intersectedList[i];
@@ -213,9 +288,15 @@ AFRAME.registerComponent("mymaze", {
 				//	el.parentNode.removeChild(el);
 					intersectedList.splice(i);
 					gameState.updatePoints();
-					gameState.updateHearts();
+					var coins = document.querySelector("#coinVal");
+					coins.setAttribute("value", gameState.points);
+				//	coins.value = gameState.points;
+				//	gameState.updateHearts();
 				} else {
+					console.log("heart");
 					gameState.updateHearts();
+					var hearts = document.querySelector("#heartVal");
+					hearts.setAttribute("value", gameState.hearts);
 				}
 			}
 		};

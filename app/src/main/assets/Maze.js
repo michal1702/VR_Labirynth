@@ -76,9 +76,18 @@ class Maze {
 				if(grid[r][c].walls.rWall === true) val += 2;
 				if(grid[r][c].walls.bWall === true) val += 4;
 				if(grid[r][c].walls.lWall === true) val += 8;
-				if(grid[r][c].special === 1) val += 16;
-				if(grid[r][c].special === 2) val += 32;
-				if(grid[r][c].special === 3) val += 64;
+				if(grid[r][c].special === 1) {
+					val += 16;
+				} else {
+					if(grid[r][c].walls.rWall && grid[r][c].walls.lWall){
+						val += 64;
+					} else if(grid[r][c].walls.tWall && grid[r][c].walls.bWall){
+						val+= 32;
+					}
+				}
+				
+				
+				
 				mapRow.push(val);
 			}
 			map.push(mapRow);

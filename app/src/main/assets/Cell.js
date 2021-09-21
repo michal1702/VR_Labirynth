@@ -13,6 +13,7 @@ class Cell {
 			bWall: true,
 			lWall: true,
 		}
+		
 		let rand = Math.random();
 		if(rand > trapDensity) {
 			if(rand < trapDensity + coinDensity) {
@@ -21,11 +22,12 @@ class Cell {
 				this.special = specials.NONE;
 			}
 		} else {
-			if(rand < axeDensity) {
+			/* if(rand < axeDensity) {
 				this.special = specials.AXES;
 			} else {
 				this.special = specials.SPIKES;
-			}
+			} */
+			
 		}
 	}
 	checkNeighbours() {
