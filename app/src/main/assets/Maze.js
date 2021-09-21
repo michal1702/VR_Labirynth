@@ -40,7 +40,7 @@ class Maze {
 	}
 	addEntranceExit() {
 		this.grid[0][0].walls.tWall = false;
-		this.grid[0][0].special = specials.NONE;
+		this.grid[0][0].special = specials.ENTRANCE;
 		let posEx = 0;
 		let indexEx = 0;
 		do {
@@ -53,16 +53,16 @@ class Maze {
 		} while (posEx == 0 && indexEx == 0);
 		if(posEx == 0) {
 			this.grid[0][indexEx].walls.tWall = false;
-			this.grid[0][indexEx].special = specials.NONE;
+			this.grid[0][indexEx].special = specials.EXIT;
 		} else if(posEx == 1) {
 			this.grid[indexEx][this.ncols - 1].walls.rWall = false;
-			this.grid[indexEx][this.ncols - 1].special = specials.NONE;
+			this.grid[indexEx][this.ncols - 1].special = specials.EXIT_RIGHT;
 		} else if(posEx == 2) {
 			this.grid[this.nrows - 1][indexEx].walls.bWall = false;
-			this.grid[this.nrows - 1][indexEx].special = specials.NONE;
+			this.grid[this.nrows - 1][indexEx].special = specials.EXIT_BOTTOM;
 		} else if(posEx == 3) {
 			this.grid[indexEx][0].walls.lWall = false;
-			this.grid[indexEx][0].special = specials.NONE;
+			this.grid[indexEx][0].special = specials.EXIT_LEFT;
 		}
 	}
 	generateMap() {
@@ -79,12 +79,18 @@ class Maze {
 				if(grid[r][c].special === 1) {
 					val += 16;
 				} else {
-					if(grid[r][c].walls.rWall && grid[r][c].walls.lWall){
-						val += 64;
-					} else if(grid[r][c].walls.tWall && grid[r][c].walls.bWall){
-						val+= 32;
+					if(grid[r][c].special < 4){
+						if(grid[r][c].walls.rWall && grid[r][c].walls.lWall){
+							val += 64;
+						} 	else if(grid[r][c].walls.tWall && grid[r][c].walls.bWall){
+							val+= 32;
+						}
 					}
 				}
+				if(grid[r][c].special === 4) val += 128;
+				if(grid[r][c].special === 5) val += 256;
+				if(grid[r][c].special === 6) val += 512;
+				if(grid[r][c].special === 7) val += 1024;
 				
 				
 				

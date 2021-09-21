@@ -8,7 +8,7 @@
     	var multiArray = ourMaze.generateMap();
     	var flatArray = multiArray.flat();
     	gameState = new GameState(0.8 - (2 * ourMaze.ncols-1), 1.6, 0.8 - (2 * ourMaze.nrows-1), 0, 3, flatArray, ourMaze.ncols, ourMaze.nrows)
-}else {
+/* }else { 
 	var posX = android.getPositionX();
 	var posY = android.getPositionY();
 	var posZ = android.getPositionZ();
@@ -24,7 +24,7 @@
 	var columns = android.getColumns();
 	var rows = android.getRows();
 	gameState = new GameState(posX, posY, posZ, points, hearts, map, columns, rows);
-}
+} 
 
 	/*let ourMaze = new Maze(5, 5, 0.5, 0.09, 0.01);
 	ourMaze.init();
@@ -86,6 +86,44 @@ AFRAME.registerComponent("mymaze", {
 				var hasOtherTrap = false;
 				var index = r*gameState.columns+c;
 				let tmpVal = gameState.map[index];
+				if(tmpVal >= 1024) {
+					tmpVal -= 1024;
+					
+					var bWall = this.el.sceneEl.components.pool__entrance.requestEntity();
+						bWall.setAttribute("class", "exit");
+					//	bWall.setAttribute("color", "#ececec");
+						bWall.object3D.position.set(0 + c * 4 - (2 * (gameState.columns-1)),
+							2,
+							2 + r * 4 - (2 * (gameState.rows-1)));
+				}
+				if(tmpVal >= 512) {
+					tmpVal -= 512;
+					
+					var rWall = this.el.sceneEl.components.pool__exitr.requestEntity();
+						rWall.setAttribute("class", "exit");
+					//	rWall.setAttribute("color", "#ececec");
+						rWall.object3D.position.set(2 + c * 4 - (2 * (gameState.columns-1)),
+							2,
+							0 + r * 4 - (2 * (gameState.rows-1)));
+				}
+				if(tmpVal >= 256) {
+					tmpVal -= 256;
+					var lWall = this.el.sceneEl.components.pool__exitl.requestEntity();
+					lWall.setAttribute("class", "exit");
+					lWall.setAttribute("color", "#ececec");
+					
+					lWall.object3D.position.set(-2 + c * 4 - (2 * (gameState.columns-1)), 2, 0 + r * 4 - (2 * (gameState.rows-1)));
+				}
+				if(tmpVal >= 128) {
+					tmpVal -= 128;
+					var tWall = this.el.sceneEl.components.pool__entrance.requestEntity();
+					tWall.setAttribute("class", "wall");
+				//	tWall.setAttribute('color', '#ECECEC');
+				
+					tWall.object3D.position.set(0 + c * 4 - (2 * (gameState.columns-1)),
+						2,
+						-2 + r * 4 - (2 * (gameState.rows-1)));
+				}
 				if(tmpVal >= 64) {
 					tmpVal -= 64;
 				//	hasTrap = true;
@@ -223,7 +261,7 @@ AFRAME.registerComponent("mymaze", {
 					tmpVal -= 8;
 					var lWall = this.el.sceneEl.components.pool__lwalls.requestEntity();
 					lWall.setAttribute("class", "wall");
-					
+						lWall.setAttribute("color", "#843c24");
 					lWall.object3D.position.set(-2 + c * 4 - (2 * (gameState.columns-1)), 2, 0 + r * 4 - (2 * (gameState.rows-1)));
 					
 				
@@ -233,6 +271,7 @@ AFRAME.registerComponent("mymaze", {
 					if(r === gameState.rows - 1) {
 						var bWall = this.el.sceneEl.components.pool__hwalls.requestEntity();
 						bWall.setAttribute("class", "wall");
+						bWall.setAttribute("color", "#843c24");
 						bWall.object3D.position.set(0 + c * 4 - (2 * (gameState.columns-1)),
 							2,
 							2 + r * 4 - (2 * (gameState.rows-1)));
@@ -243,6 +282,7 @@ AFRAME.registerComponent("mymaze", {
 					if(c === gameState.columns - 1) {
 						var rWall = this.el.sceneEl.components.pool__rwalls.requestEntity();
 						rWall.setAttribute("class", "wall");
+						rWall.setAttribute("color", "#843c24");
 						rWall.object3D.position.set(2 + c * 4 - (2 * (gameState.columns-1)),
 							2,
 							0 + r * 4 - (2 * (gameState.rows-1)));
@@ -252,6 +292,7 @@ AFRAME.registerComponent("mymaze", {
 					tmpVal -= 1;
 					var tWall = this.el.sceneEl.components.pool__hwalls.requestEntity();
 					tWall.setAttribute("class", "wall");
+					tWall.setAttribute("color", "#843c24");
 					tWall.object3D.position.set(0 + c * 4 - (2 * (gameState.columns-1)),
 						2,
 						-2 + r * 4 - (2 * (gameState.rows-1)));
@@ -262,7 +303,7 @@ AFRAME.registerComponent("mymaze", {
 	tick: function() {
 		var player = document.querySelector("#player");
 		var intersectedList = player.components['aabb-collider']['intersectedEls'];
-		console.log(intersectedList);
+	//	console.log(intersectedList);
 		if(intersectedList.length === 0) {
 			
 			this.lastPosition = {
@@ -276,7 +317,7 @@ AFRAME.registerComponent("mymaze", {
 			for(var i = 0; i < intersectedList.length; i++) {
 				var intersectedType = intersectedList[i].getAttribute("class");
 				if(intersectedType == "wall") {
-					console.log("hit");
+				//	console.log("hit");
 					player.object3D.position.set(this.lastPosition.x, this.lastPosition.y, this.lastPosition.z);
 				} else if(intersectedType == "coin") {
 					var el = intersectedList[i];
@@ -292,7 +333,12 @@ AFRAME.registerComponent("mymaze", {
 					coins.setAttribute("value", gameState.points);
 				//	coins.value = gameState.points;
 				//	gameState.updateHearts();
-				} else {
+				} else if(intersectedType == "exit"){
+					gameState.points += gameState.heart * 20;
+					this.pause()
+					android.gameOver(gameState.points);
+				} 
+				else {
 					console.log("heart");
 					gameState.updateHearts();
 					var hearts = document.querySelector("#heartVal");
@@ -301,9 +347,9 @@ AFRAME.registerComponent("mymaze", {
 			}
 		};
 		
-		if(gameState.hearts == 0){
-			this.pause()
-			android.gameOver(gameState.points);
+		if(gameState.hearts <= 0){
+		//	this.pause()
+		//	android.gameOver(gameState.points);
 		}
 		
 		gameState.updatePosition(player.getAttribute("position").x, player.getAttribute("position").y, player.getAttribute("position").z);
