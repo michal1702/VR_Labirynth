@@ -1,14 +1,26 @@
  var gameState;
+ const mazeRows = 5;
+ const mazeCols = 5;
+ const collisionInterval = 100;
+ /* Take note - density is expressed as share of available cells, not all cells.
+ Available cells for coins do not include:
+ -> exit and entrance cells
+ Available cells for traps do not include:
+ -> exit and entrance cells
+ -> cells without bottom-top or left-right pairing of walls
+ */
+ const coinDensity = 0.5;
+ const trapDensity = 0.5;
+ const heartToCoinExchangeRate = 20;
 
- 
- var ourMaze = new Maze(5, 5, 0.5, 0.09, 0.01);
+ var ourMaze = new Maze(mazeRows, mazeCols, coinDensity, trapDensity);
  ourMaze.init();
  ourMaze.addEntranceExit();
  ourMaze.draw();
  var multiArray = ourMaze.generateMap();
  var flatArray = multiArray.flat();
  gameState = new GameState(0.8 - (2 * ourMaze.ncols - 1), 1.6, 0.8 - (2 * ourMaze.nrows - 1), 0, 3, flatArray, ourMaze.ncols, ourMaze.nrows)
- 
+
 
  AFRAME.registerComponent("mymaze", {
  	schema: {
@@ -107,10 +119,17 @@
 
  		for (let r = 0; r < gameState.rows; r++) {
  			for (let c = 0; c < gameState.columns; c++) {
- 				var hasTrap = false;
- 				var hasOtherTrap = false;
  				var index = r * gameState.columns + c;
  				let tmpVal = gameState.map[index];
+ 				if (tmpVal >= 2048) {
+ 					tmpVal -= 2048;
+
+ 					var tWall = this.el.sceneEl.components.pool__entrance.requestEntity();
+ 					tWall.setAttribute("class", "exit");
+ 					tWall.object3D.position.set(0 + c * 4 - (2 * (gameState.columns - 1)),
+ 						2,
+ 						-2 + r * 4 - (2 * (gameState.rows - 1)));
+ 				}
  				if (tmpVal >= 1024) {
  					tmpVal -= 1024;
 
@@ -133,7 +152,6 @@
  					tmpVal -= 256;
  					var lWall = this.el.sceneEl.components.pool__exitl.requestEntity();
  					lWall.setAttribute("class", "exit");
- 				//	lWall.setAttribute("color", "#ececec");
 
  					lWall.object3D.position.set(-2 + c * 4 - (2 * (gameState.columns - 1)), 2, 0 + r * 4 - (2 * (gameState.rows - 1)));
  				}
@@ -300,16 +318,16 @@
  					var coins = document.querySelector("#coinVal");
  					coins.setAttribute("value", gameState.points);
  				} else if (intersectedType == "exit") {
- 					gameState.points += gameState.hearts * 20;
-					var coins = document.querySelector("#coinVal");
-				coins.setAttribute('value', `You won! ${gameState.points}`);
+ 					gameState.points += gameState.hearts * heartToCoinExchangeRate;
+ 					var coins = document.querySelector("#coinVal");
+ 					coins.setAttribute('value', `You won! ${gameState.points}`);
  					this.pause()
- 					
+
  				} else {
  					if (this.data.interval == 0) {
  						player.object3D.position.set(this.data.initX, this.data.initY, this.data.initZ);
  						gameState.updateHearts();
- 						this.data.interval += 100;
+ 						this.data.interval += collisionInterval;
  						var hearts = document.querySelector("#heartVal");
  						hearts.setAttribute("value", gameState.hearts);
  					}
@@ -318,9 +336,9 @@
  		};
 
  		if (gameState.hearts <= 0) {
-			var hearts = document.querySelector("#heartVal");
+ 			var hearts = document.querySelector("#heartVal");
  			hearts.setAttribute("value", "0 - You lost!");
-			this.pause()
+ 			this.pause()
  		}
 
  		if (this.data.interval > 0) {
@@ -331,7 +349,6 @@
  	},
 
  	pause: function() {
- 		
+
  	}
  })
-

@@ -1,20 +1,18 @@
 class Maze {
-	constructor(nrows, ncols, coinDensity, axeDensity, spikeDensity) {
+	constructor(nrows, ncols, coinDensity, trapDensity) {
 		this.nrows = nrows;
 		this.ncols = ncols;
 		this.grid = [];
 		this.stack = [];
 		this.tmp = [];
 		this.coinDensity = coinDensity;
-		this.axeDensity = axeDensity;
-		this.spikeDensity = spikeDensity;
-		this.trapDensity = axeDensity + spikeDensity;
+		this.trapDensity = trapDensity;
 	}
 	init() {
 		for (let r = 0; r < this.nrows; r++) {
 			let row = []
 			for (let c = 0; c < this.ncols; c++) {
-				let cell = new Cell(r, c, this.grid, this.coinDensity, this.axeDensity, this.trapDensity);
+				let cell = new Cell(r, c, this.grid, this.coinDensity, this.trapDensity);
 				row.push(cell);
 			}
 			this.grid.push(row);
@@ -53,7 +51,7 @@ class Maze {
 		} while (posEx == 0 && indexEx == 0);
 		if (posEx == 0) {
 			this.grid[0][indexEx].walls.tWall = false;
-			this.grid[0][indexEx].special = specials.EXIT;
+			this.grid[0][indexEx].special = specials.EXIT_TOP;
 		} else if (posEx == 1) {
 			this.grid[indexEx][this.ncols - 1].walls.rWall = false;
 			this.grid[indexEx][this.ncols - 1].special = specials.EXIT_RIGHT;
@@ -76,21 +74,20 @@ class Maze {
 				if (grid[r][c].walls.rWall === true) val += 2;
 				if (grid[r][c].walls.bWall === true) val += 4;
 				if (grid[r][c].walls.lWall === true) val += 8;
-				if (grid[r][c].special === 1) {
-					val += 16;
-				} else {
-					if (grid[r][c].special < 4) {
-						if (grid[r][c].walls.rWall && grid[r][c].walls.lWall) {
-							val += 64;
-						} else if (grid[r][c].walls.tWall && grid[r][c].walls.bWall) {
-							val += 32;
-						}
+				if (grid[r][c].special === 1) val += 16;
+
+				if (grid[r][c].special === 2) {
+					if (grid[r][c].walls.rWall && grid[r][c].walls.lWall) {
+						val += 64;
+					} else if (grid[r][c].walls.tWall && grid[r][c].walls.bWall) {
+						val += 32;
 					}
 				}
-				if (grid[r][c].special === 4) val += 128;
-				if (grid[r][c].special === 5) val += 256;
-				if (grid[r][c].special === 6) val += 512;
-				if (grid[r][c].special === 7) val += 1024;
+				if (grid[r][c].special === 3) val += 128;
+				if (grid[r][c].special === 4) val += 256;
+				if (grid[r][c].special === 5) val += 512;
+				if (grid[r][c].special === 6) val += 1024;
+				if (grid[r][c].special === 7) val += 2048;
 
 
 

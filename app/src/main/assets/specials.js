@@ -1,11 +1,10 @@
 const specials = {
 	NONE: 0,
 	COIN: 1,
-	AXES: 2,
-	SPIKES: 3,
-	ENTRANCE: 4,
-	EXIT_LEFT: 5,
-	EXIT_RIGHT: 6,
-	EXIT_BOTTOM: 7
-	
+	TRAP: 2,
+	ENTRANCE: 3,
+	EXIT_LEFT: 4,
+	EXIT_RIGHT: 5,
+	EXIT_BOTTOM: 6,
+	EXIT_TOP: 7
 };
