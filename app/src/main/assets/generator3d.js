@@ -1,14 +1,14 @@
  var gameState;
 
- //if(!android.checkLoad()){
-	var ourMaze = new Maze(5, 5, 0.5, 0.2, 0.2);
+ if(!android.checkLoad()){
+	var ourMaze = new Maze(5, 5, 0.5, 0.09, 0.01);
     	ourMaze.init();
     	ourMaze.addEntranceExit();
     	ourMaze.draw();
     	var multiArray = ourMaze.generateMap();
     	var flatArray = multiArray.flat();
     	gameState = new GameState(0.8 - (2 * ourMaze.ncols-1), 1.6, 0.8 - (2 * ourMaze.nrows-1), 0, 3, flatArray, ourMaze.ncols, ourMaze.nrows)
-/*}else {
+}else {
 	var posX = android.getPositionX();
 	var posY = android.getPositionY();
 	var posZ = android.getPositionZ();
@@ -301,17 +301,17 @@ AFRAME.registerComponent("mymaze", {
 			}
 		};
 		
-		/*if(gameState.hearts == 0){
+		if(gameState.hearts == 0){
 			this.pause()
-		//	android.gameOver(gameState.points);
-		}*/
+			android.gameOver(gameState.points);
+		}
 		
 		gameState.updatePosition(player.getAttribute("position").x, player.getAttribute("position").y, player.getAttribute("position").z);
 	},
 	
-/*	pause: function() {
+	//pause: function() {
 	//	android.gameOver(gameState.points);
-	} */
+	//}
 })
 
 function saveGameState() {
