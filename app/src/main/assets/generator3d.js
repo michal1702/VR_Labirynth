@@ -12,6 +12,7 @@
  const coinDensity = 0.5;
  const trapDensity = 0.5;
  const heartToCoinExchangeRate = 20;
+ const initialHearts = 3;
 
  var ourMaze = new Maze(mazeRows, mazeCols, coinDensity, trapDensity);
  ourMaze.init();
@@ -19,7 +20,7 @@
  ourMaze.draw();
  var multiArray = ourMaze.generateMap();
  var flatArray = multiArray.flat();
- gameState = new GameState(0.8 - (2 * ourMaze.ncols - 1), 1.6, 0.8 - (2 * ourMaze.nrows - 1), 0, 3, flatArray, ourMaze.ncols, ourMaze.nrows)
+ gameState = new GameState(0.8 - (2 * ourMaze.ncols - 1), 1.6, 0.8 - (2 * ourMaze.nrows - 1), 0, initialHearts, flatArray, ourMaze.ncols, ourMaze.nrows)
 
 
  AFRAME.registerComponent("mymaze", {
