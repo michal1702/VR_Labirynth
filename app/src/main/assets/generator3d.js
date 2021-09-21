@@ -1,6 +1,6 @@
  var gameState;
 
-// if(!android.checkLoad()){
+ if(!android.checkLoad()){
 	var ourMaze = new Maze(5, 5, 0.5, 0.09, 0.01);
     	ourMaze.init();
     	ourMaze.addEntranceExit();
@@ -8,7 +8,7 @@
     	var multiArray = ourMaze.generateMap();
     	var flatArray = multiArray.flat();
     	gameState = new GameState(0.8 - (2 * ourMaze.ncols-1), 1.6, 0.8 - (2 * ourMaze.nrows-1), 0, 3, flatArray, ourMaze.ncols, ourMaze.nrows)
-/* }else { 
+ }else {
 	var posX = android.getPositionX();
 	var posY = android.getPositionY();
 	var posZ = android.getPositionZ();
@@ -24,18 +24,7 @@
 	var columns = android.getColumns();
 	var rows = android.getRows();
 	gameState = new GameState(posX, posY, posZ, points, hearts, map, columns, rows);
-} 
-
-	/*let ourMaze = new Maze(5, 5, 0.5, 0.09, 0.01);
-	ourMaze.init();
-	ourMaze.addEntranceExit();
-	ourMaze.draw();
-	var multiArray = ourMaze.generateMap();
-	console.log(multiArray);
-	var flatArray = multiArray.flat();
-	var gameState = new GameState(0.8, 1.6, 0.8, 0, 5, flatArray, 2 * (gameState.columns - 1), 2 * (gameState.columns - 1))*/
-	
-
+}
 
 AFRAME.registerComponent("mymaze", {
 	schema: {
@@ -105,10 +94,11 @@ AFRAME.registerComponent("mymaze", {
 		coinLabel.setAttribute("scale", "0.5 0.5 0.5");
 		
 		var coinValue = document.createElement("a-text");
-		coinValue.setAttribute("value", "0");
+		coinValue.setAttribute('value',`${gameState.points}`);
 		coinValue.setAttribute("position", "-0.8 0.75 -1");
 		coinValue.setAttribute("color", "black");
 		coinValue.setAttribute("scale", "0.5 0.5 0.5");
+		coinValue.setAttribute("id","coinVal");
 		
 			var heartsLabel = document.createElement("a-text");
 		heartsLabel.setAttribute("value", "Lives: ");
@@ -117,10 +107,11 @@ AFRAME.registerComponent("mymaze", {
 		heartsLabel.setAttribute("scale", "0.5 0.5 0.5");
 		
 			var heartsValue = document.createElement("a-text");
-		heartsValue.setAttribute("value", "3");
+		heartsValue.setAttribute('value',`${gameState.hearts}`);
 		heartsValue.setAttribute("position", "-0.8 0.55 -1");
 		heartsValue.setAttribute("color", "black");
 		heartsValue.setAttribute("scale", "0.5 0.5 0.5");
+		heartsValue.setAttribute("id","heartVal");
 		
 		cam.appendChild(heartsValue);
 		cam.appendChild(heartsLabel);
@@ -381,6 +372,7 @@ AFRAME.registerComponent("mymaze", {
 					intersectedList.splice(i);
 					gameState.updatePoints();
 					var coins = document.querySelector("#coinVal");
+					console.log(coins)
 					coins.setAttribute("value", gameState.points);
 				//	coins.value = gameState.points;
 				//	gameState.updateHearts();
@@ -394,7 +386,7 @@ AFRAME.registerComponent("mymaze", {
 				if(this.data.interval == 0){
 					player.object3D.position.set(this.data.initX, this.data.initY, this.data.initZ);
 					gameState.updateHearts();
-					this.data.interval+=1000;
+					this.data.interval+=100;
 					var hearts = document.querySelector("#heartVal");
 					hearts.setAttribute("value", gameState.hearts);
 				}
@@ -403,8 +395,8 @@ AFRAME.registerComponent("mymaze", {
 		};
 		
 		if(gameState.hearts <= 0){
-		//	this.pause()
-		//	android.gameOver(gameState.points);
+			this.pause()
+			android.gameOver(gameState.points);
 		}
 		
 		if(this.data.interval > 0){
@@ -414,9 +406,9 @@ AFRAME.registerComponent("mymaze", {
 		gameState.updatePosition(player.getAttribute("position").x, player.getAttribute("position").y, player.getAttribute("position").z);
 	},
 	
-	//pause: function() {
-	//	android.gameOver(gameState.points);
-	//}
+	pause: function() {
+		android.gameOver(gameState.points);
+	}
 })
 
 function saveGameState() {
